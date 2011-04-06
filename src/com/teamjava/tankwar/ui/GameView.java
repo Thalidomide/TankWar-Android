@@ -31,8 +31,9 @@ public class GameView extends View
     private float x = 0;
     private float y = 0;
 
-	private int background = Color.rgb(100, 160, 220);
-	private int ground = Color.rgb(0, 255, 0);
+	private int backgroundColor = Color.rgb(100, 160, 220);
+	private int groundColor = Color.rgb(0, 255, 0);
+	private int bombColor = Color.rgb(80, 80, 50);
 	private DrawListener listener;
 
     public GameView(Context context)
@@ -42,7 +43,7 @@ public class GameView extends View
 		initData();
 
         this.setOnTouchListener(this);
-        setBackgroundColor(background);
+        setBackgroundColor(backgroundColor);
 
         //paint.setAntiAlias(true);
 
@@ -82,20 +83,21 @@ public class GameView extends View
 
 			drawEarth(canvas);
 //			drawRobots(g);
-//			drawBombs(g);
+			drawBombs(canvas);
 		} finally {
 			if (listener != null) {
 				listener.paintCompleted();
 			}
 		}
-
-	   //canvas.drawRect(x,y, x + 20, y + 20, paint);
     }
 
     public boolean onTouch(View view, MotionEvent motionEvent)
     {
         x = motionEvent.getX();
         y = motionEvent.getY();
+
+		createBomb(x, y);
+
         invalidate();
 
         return true;
@@ -137,7 +139,7 @@ public class GameView extends View
 		//int yTop = 50;
 		int yBottom = Math.round(earthSlicePiece.getDepth() == -1 ? getHeight() : yTop + earthSlicePiece.getDepth());
 
-		paint.setColor(ground);
+		paint.setColor(groundColor);
 		paint.setStrokeWidth(1);
 
 		canvas.drawLine(x, yTop, x, yBottom, paint);
@@ -145,27 +147,27 @@ public class GameView extends View
 		//g.drawLine(x, yTop, x, yBottom);
 	}
 
-	private void drawBombs(Graphics g) {
+	private void drawBombs(Canvas canvas) {
 		for (Bomb bomb : world.getBombs()) {
-			drawBomb(bomb, g);
+			drawBomb(bomb, canvas);
 		}
 	}
 
-	private void drawBomb(Bomb bomb, Graphics g) {
+	private void drawBomb(Bomb bomb, Canvas canvas) {
 		int radius = bomb.getStrength() / 4;
 		if (radius < 1) {
 			radius = 1;
 		}
-		int diameter = radius * 2;
 
-		int x = Math.round(bomb.getX() - radius);
-		int y = getHeight() - Math.round(bomb.getY() + radius);
+		float x = bomb.getX();
+		float y = getHeight() - bomb.getY();
 
-		g.setColor(java.awt.Color.gray);
-		g.fillOval(x, y, diameter, diameter);
+		paint.setColor(bombColor);
+
+		canvas.drawCircle(x, y, radius, paint);
 	}
 
-	public void createBomb(int x, int y) {
+	public void createBomb(float x, float y) {
 		int strength = (int) (Math.random() * 50 + 5);
 		Bomb bomb = new Bomb(x, getHeight() - y, strength);
 		synchronized (world.getBombs()) {
