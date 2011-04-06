@@ -56,8 +56,6 @@ public class GameFrame extends JFrame {
 		World world = Manager.getWorld();
 		world.addRobot(robot);
 
-		addKeyListener(new PlayerKeyboardListener(robot));
-
 		worldEngine = new WorldEngine(world);
 
 		repainter = new Repainter(gamePanel, worldEngine);
