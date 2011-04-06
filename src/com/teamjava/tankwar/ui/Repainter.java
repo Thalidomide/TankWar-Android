@@ -3,12 +3,13 @@ package com.teamjava.tankwar.ui;
 import android.os.Handler;
 
 import com.teamjava.tankwar.engine.WorldEngine;
+import com.teamjava.tankwar.entities.GlobalSettings;
 
 /**
  * @author Olav Jensen
  * @since Feb 4, 2011
  */
-public class Repainter implements DrawListener {
+public class Repainter implements Runnable, DrawListener {
 
 	private boolean isDrawing;
 
@@ -24,35 +25,25 @@ public class Repainter implements DrawListener {
 		gameView.setListener(this);
 	}
 
-	public void start() {
-		long sleepTime = 0;
+	//int counter = 10;
 
-		while (true) {
-			try {
-				if (!isDrawing) {
-					isDrawing = true;
-					worldEngine.updateWorld();
-					gameView.invalidate();
-					handler.post(new Runnable(){
-						@Override
-						public void run() {
-							System.out.println("HMM");
-						}
-					});
-					//sleepTime = GlobalSettings.REPAINT_SLEEP - worldEngine.getLastUpdateTime();
-					sleepTime = 100;
-					if (sleepTime < 0) {
-						sleepTime = 0;
-					}
-				} else {
-					//System.out.println("GamePanel var ikke ferdig med opptegning, droppe oppdatering/opptegning..");
-				}
-				Thread.sleep(sleepTime);
-				break;
-			} catch (InterruptedException e) {
-				break;
+	@Override
+	public void run() {
+		long sleepTime = 0;
+		if (!isDrawing) {
+			isDrawing = true;
+			worldEngine.updateWorld();
+			gameView.invalidate();
+			sleepTime = GlobalSettings.REPAINT_SLEEP - worldEngine.getLastUpdateTime();
+			///sleepTime = 100;
+			if (sleepTime < 0) {
+				sleepTime = 0;
 			}
+		} else {
+			//System.out.println("GamePanel var ikke ferdig med opptegning, droppe oppdatering/opptegning..");
 		}
+
+		handler.postDelayed(this, sleepTime);
 	}
 
 	@Override

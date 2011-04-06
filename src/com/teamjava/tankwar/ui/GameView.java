@@ -7,6 +7,7 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.os.Handler;
 import android.view.MotionEvent;
 import android.view.View;
 
@@ -49,7 +50,7 @@ public class GameView extends View
 
 		paint.setColor(R.color.black);
 
-		invalidate();
+		//invalidate();
     }
 
 	public void setListener(DrawListener listener) {
@@ -72,9 +73,12 @@ public class GameView extends View
 
 		WorldEngine worldEngine = new WorldEngine(world);
 
-//		Repainter repainter = new Repainter(this, worldEngine);
-		RepainterThread repainter = new RepainterThread(this, worldEngine);
-		repainter.start();
+		Handler handler = new Handler();
+		handler.post(new Repainter(GameView.this, worldEngine, handler));
+
+		//Repainter repainter = new Repainter(this, worldEngine);
+		//RepainterThread repainter = new RepainterThread(this, worldEngine);
+		//repainter.start();
 	}
 
 	@Override
@@ -82,14 +86,13 @@ public class GameView extends View
 		try {
 			world = Manager.getWorld();
 
-			System.out.println("Tegne jord..");
+			//System.out.println("Tegne jord..");
 			drawEarth(canvas);
 //			drawRobots(g);
-			System.out.println("Tegne bomber..");
+			//System.out.println("Tegne bomber..");
 			drawBombs(canvas);
-			System.out.println("Ferdig?");
 		} finally {
-			System.out.println("FERDIG med opptegning, gi beskjed til lytteren: " + listener);
+			//System.out.println("FERDIG med opptegning, gi beskjed til lytteren: " + listener);
 			if (listener != null) {
 				listener.paintCompleted();
 			}

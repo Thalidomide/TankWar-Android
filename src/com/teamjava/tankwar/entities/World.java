@@ -34,7 +34,7 @@ public class World {
 
 	private static EarthSlice[] createSurface(GameSettings settings) {
 		EarthSlice[] surface = new EarthSlice[settings.getWorldWidth()];
-		int y = 200;
+		int y = 400;
 		Random random = new Random();
 
 		for (int i = 0; i < surface.length; i++) {

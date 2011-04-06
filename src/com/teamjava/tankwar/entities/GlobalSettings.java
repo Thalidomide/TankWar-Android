@@ -6,7 +6,7 @@ package com.teamjava.tankwar.entities;
  */
 public class GlobalSettings {
 
-	public final static long REPAINT_SLEEP = 40;
+	public final static long REPAINT_SLEEP = 30;
 
 	public static float GRAVITY = .1f;
 
