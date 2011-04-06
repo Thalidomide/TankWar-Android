@@ -7,18 +7,18 @@ import com.teamjava.tankwar.entities.GlobalSettings;
  * @author Olav Jensen
  * @since Feb 4, 2011
  */
-public class Repainter extends Thread implements DrawListener {
+public class RepainterThread extends Thread implements DrawListener {
 
 	private boolean isDrawing;
 
-	private final GamePanel gamePanel;
+	private final GameView gameView;
 	private final WorldEngine worldEngine;
 
-	public Repainter(GamePanel gamePanel, WorldEngine worldEngine) {
-		this.gamePanel = gamePanel;
+	public RepainterThread(GameView gameView, WorldEngine worldEngine) {
+		this.gameView = gameView;
 		this.worldEngine = worldEngine;
 
-		gamePanel.setListener(this);
+		gameView.setListener(this);
 	}
 
 	@Override
@@ -32,7 +32,9 @@ public class Repainter extends Thread implements DrawListener {
 				if (!isDrawing) {
 					isDrawing = true;
 					worldEngine.updateWorld();
-					gamePanel.repaint();
+					gameView.invalidate();
+//					gameView.forceLayout();
+					//gameView.repaint();
 					sleepTime = GlobalSettings.REPAINT_SLEEP - worldEngine.getLastUpdateTime();
 					if (sleepTime < 0) {
 						sleepTime = 0;

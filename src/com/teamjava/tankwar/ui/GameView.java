@@ -1,5 +1,7 @@
 package com.teamjava.tankwar.ui;
 
+import java.awt.Graphics;
+
 import android.R;
 import android.content.Context;
 import android.graphics.Canvas;
@@ -8,6 +10,15 @@ import android.graphics.Paint;
 import android.view.MotionEvent;
 import android.view.View;
 
+import com.teamjava.tankwar.engine.WorldEngine;
+import com.teamjava.tankwar.entities.Bomb;
+import com.teamjava.tankwar.entities.EarthSlice;
+import com.teamjava.tankwar.entities.EarthSlicePiece;
+import com.teamjava.tankwar.entities.GameSettings;
+import com.teamjava.tankwar.entities.Manager;
+import com.teamjava.tankwar.entities.Robot;
+import com.teamjava.tankwar.entities.World;
+
 /**
  * User: rak
  */
@@ -15,24 +26,70 @@ public class GameView extends View
     implements View.OnTouchListener
 {
     Paint paint = new Paint();
+	private World world;
 
     private float x = 0;
     private float y = 0;
+
+	private int background = Color.rgb(100, 160, 220);
+	private int ground = Color.rgb(0, 255, 0);
+	private DrawListener listener;
 
     public GameView(Context context)
     {
         super(context);
 
-        this.setOnTouchListener(this);
-        setBackgroundColor(R.color.black);
+		initData();
 
-        paint.setAntiAlias(true);
-        paint.setColor(Color.BLUE);
+        this.setOnTouchListener(this);
+        setBackgroundColor(background);
+
+        //paint.setAntiAlias(true);
+
+		paint.setColor(R.color.black);
+
+		invalidate();
     }
 
-    @Override
+	public void setListener(DrawListener listener) {
+		this.listener = listener;
+	}
+
+	private void initData() {
+		GameSettings gameSettings = new GameSettings(300);
+		World world = new World(gameSettings);
+
+		Manager.setSettings(gameSettings);
+		Manager.setWorld(world);
+
+		Robot robot = new Robot();
+		robot.setY(1000);
+		robot.setX(10);
+
+//		World world = Manager.getWorld();
+//		world.addRobot(robot);
+
+		WorldEngine worldEngine = new WorldEngine(world);
+
+//		RepainterThread repainter = new RepainterThread(this, worldEngine);
+//		repainter.start();
+	}
+
+	@Override
 	public void onDraw(Canvas canvas) {
-	   canvas.drawRect(x,y, x + 20, y + 20, paint);
+		try {
+			world = Manager.getWorld();
+
+			drawEarth(canvas);
+//			drawRobots(g);
+//			drawBombs(g);
+		} finally {
+			if (listener != null) {
+				listener.paintCompleted();
+			}
+		}
+
+	   //canvas.drawRect(x,y, x + 20, y + 20, paint);
     }
 
     public boolean onTouch(View view, MotionEvent motionEvent)
@@ -43,4 +100,76 @@ public class GameView extends View
 
         return true;
     }
+
+	private void drawEarth(Canvas canvas) {
+		System.out.println("Antall jordstykker å tegne: " + world.getSurface().length);
+		int width = getWidth();
+		int i = 0;
+		while (i < width && i < world.getSurface().length) {
+			drawEarthSlice(world.getSurface()[i], canvas);
+			i++;
+		}
+	}
+
+	private void drawRobots(Graphics g) {
+		for (Robot robot : world.getRobots()) {
+			int x = Math.round(robot.getX());
+			int y = getHeight() - Math.round(robot.getY());
+			int radius = 4;
+
+			g.setColor(java.awt.Color.BLACK);
+			g.fillOval(x - radius, y - radius, radius * 2, radius * 2);
+		}
+
+	}
+
+	private void drawEarthSlice(EarthSlice earthSlice, Canvas canvas) {
+		drawEarthSlicePiece(earthSlice.getTopSurface(), canvas);
+
+		for (EarthSlicePiece earthSlicePiece : earthSlice.getSubSurfaces()) {
+			drawEarthSlicePiece(earthSlicePiece, canvas);
+		}
+	}
+
+	private void drawEarthSlicePiece(EarthSlicePiece earthSlicePiece, Canvas canvas) {
+		int x = (int) earthSlicePiece.getX();
+		int yTop = Math.round(getHeight() - earthSlicePiece.getY());
+		//int yTop = 50;
+		int yBottom = Math.round(earthSlicePiece.getDepth() == -1 ? getHeight() : yTop + earthSlicePiece.getDepth());
+
+		paint.setColor(ground);
+		paint.setStrokeWidth(1);
+
+		canvas.drawLine(x, yTop, x, yBottom, paint);
+		//canvas.drawRect(x, yTop, x + 1, yBottom, paint);
+		//g.drawLine(x, yTop, x, yBottom);
+	}
+
+	private void drawBombs(Graphics g) {
+		for (Bomb bomb : world.getBombs()) {
+			drawBomb(bomb, g);
+		}
+	}
+
+	private void drawBomb(Bomb bomb, Graphics g) {
+		int radius = bomb.getStrength() / 4;
+		if (radius < 1) {
+			radius = 1;
+		}
+		int diameter = radius * 2;
+
+		int x = Math.round(bomb.getX() - radius);
+		int y = getHeight() - Math.round(bomb.getY() + radius);
+
+		g.setColor(java.awt.Color.gray);
+		g.fillOval(x, y, diameter, diameter);
+	}
+
+	public void createBomb(int x, int y) {
+		int strength = (int) (Math.random() * 50 + 5);
+		Bomb bomb = new Bomb(x, getHeight() - y, strength);
+		synchronized (world.getBombs()) {
+			world.addBomb(bomb);
+		}
+	}
 }

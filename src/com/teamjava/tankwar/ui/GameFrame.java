@@ -1,15 +1,13 @@
 package com.teamjava.tankwar.ui;
 
+import java.awt.HeadlessException;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import javax.swing.JFrame;
+
 import com.teamjava.tankwar.engine.WorldEngine;
 import com.teamjava.tankwar.entities.GlobalSettings;
 import com.teamjava.tankwar.entities.Manager;
-import com.teamjava.tankwar.entities.Robot;
-import com.teamjava.tankwar.entities.World;
-
-import javax.swing.*;
-import java.awt.*;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 
 /**
  * @author Olav Jensen
@@ -19,7 +17,7 @@ public class GameFrame extends JFrame {
 
 	private GamePanel gamePanel;
 	private WorldEngine worldEngine;
-	private Repainter repainter;
+	private RepainterThread repainter;
 
 	public GameFrame() throws HeadlessException {
 		gamePanel = new GamePanel();
@@ -49,16 +47,16 @@ public class GameFrame extends JFrame {
 	}
 
 	public void startGame() {
-		Robot robot = new Robot();
-		robot.setY(1000);
-		robot.setX(10);
-
-		World world = Manager.getWorld();
-		world.addRobot(robot);
-
-		worldEngine = new WorldEngine(world);
-
-		repainter = new Repainter(gamePanel, worldEngine);
-		repainter.start();
+//		Robot robot = new Robot();
+//		robot.setY(1000);
+//		robot.setX(10);
+//
+//		World world = Manager.getWorld();
+//		world.addRobot(robot);
+//
+//		worldEngine = new WorldEngine(world);
+//
+//		repainter = new RepainterThread(gamePanel, worldEngine);
+//		repainter.start();
 	}
 }

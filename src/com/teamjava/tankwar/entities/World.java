@@ -1,10 +1,10 @@
 package com.teamjava.tankwar.entities;
 
-import com.teamjava.tankwar.engine.GapCreator;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+
+import com.teamjava.tankwar.engine.GapCreator;
 
 /**
  * @author Olav Jensen
@@ -34,7 +34,7 @@ public class World {
 
 	private static EarthSlice[] createSurface(GameSettings settings) {
 		EarthSlice[] surface = new EarthSlice[settings.getWorldWidth()];
-		int y = 500;
+		int y = 200;
 		Random random = new Random();
 
 		for (int i = 0; i < surface.length; i++) {
