@@ -72,8 +72,9 @@ public class GameView extends View
 
 		WorldEngine worldEngine = new WorldEngine(world);
 
-//		RepainterThread repainter = new RepainterThread(this, worldEngine);
-//		repainter.start();
+//		Repainter repainter = new Repainter(this, worldEngine);
+		RepainterThread repainter = new RepainterThread(this, worldEngine);
+		repainter.start();
 	}
 
 	@Override
@@ -81,10 +82,14 @@ public class GameView extends View
 		try {
 			world = Manager.getWorld();
 
+			System.out.println("Tegne jord..");
 			drawEarth(canvas);
 //			drawRobots(g);
+			System.out.println("Tegne bomber..");
 			drawBombs(canvas);
+			System.out.println("Ferdig?");
 		} finally {
+			System.out.println("FERDIG med opptegning, gi beskjed til lytteren: " + listener);
 			if (listener != null) {
 				listener.paintCompleted();
 			}
@@ -98,13 +103,12 @@ public class GameView extends View
 
 		createBomb(x, y);
 
-        invalidate();
+        //invalidate();
 
         return true;
     }
 
 	private void drawEarth(Canvas canvas) {
-		System.out.println("Antall jordstykker å tegne: " + world.getSurface().length);
 		int width = getWidth();
 		int i = 0;
 		while (i < width && i < world.getSurface().length) {
