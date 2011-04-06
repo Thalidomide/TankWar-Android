@@ -1,11 +1,11 @@
 package com.teamjava.tankwar.engine;
 
+import java.util.Iterator;
+
 import com.teamjava.tankwar.entities.Bomb;
 import com.teamjava.tankwar.entities.EarthSlice;
 import com.teamjava.tankwar.entities.GlobalSettings;
 import com.teamjava.tankwar.entities.World;
-
-import java.util.Iterator;
 
 /**
  * @author Olav Jensen
@@ -39,7 +39,7 @@ public class WorldEngine {
 			for (Iterator<Bomb> it = world.getBombs().iterator(); it.hasNext();) {
 				Bomb bomb = it.next();
 
-				if (bomb.getX() < 0 || bomb.getX() > world.getSurface().length) {
+				if (bomb.getX() < 0 || (bomb.getX() / GlobalSettings.EARTH_PIECE_WIDTH) > world.getSurface().length) {
 					it.remove();
 					continue;
 				}
@@ -60,7 +60,7 @@ public class WorldEngine {
 	}
 
 	private void checkIfBombHitGround(Bomb bomb) {
-		EarthSlice slice = world.getSurface()[Math.round(bomb.getX())];
+		EarthSlice slice = world.getSurface()[Math.round(bomb.getX()) / GlobalSettings.EARTH_PIECE_WIDTH];
 		//TODO Also check if between sub surfaces
 		if (bomb.getY() < slice.getTopSurface().getY()) {
 			bomb.hitGround();

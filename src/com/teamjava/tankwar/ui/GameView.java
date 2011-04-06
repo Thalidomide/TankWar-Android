@@ -16,6 +16,7 @@ import com.teamjava.tankwar.entities.Bomb;
 import com.teamjava.tankwar.entities.EarthSlice;
 import com.teamjava.tankwar.entities.EarthSlicePiece;
 import com.teamjava.tankwar.entities.GameSettings;
+import com.teamjava.tankwar.entities.GlobalSettings;
 import com.teamjava.tankwar.entities.Manager;
 import com.teamjava.tankwar.entities.Robot;
 import com.teamjava.tankwar.entities.World;
@@ -58,7 +59,7 @@ public class GameView extends View
 	}
 
 	private void initData() {
-		GameSettings gameSettings = new GameSettings(300);
+		GameSettings gameSettings = new GameSettings(50);
 		World world = new World(gameSettings);
 
 		Manager.setSettings(gameSettings);
@@ -141,7 +142,7 @@ public class GameView extends View
 	}
 
 	private void drawEarthSlicePiece(EarthSlicePiece earthSlicePiece, Canvas canvas) {
-		int x = (int) earthSlicePiece.getX();
+		int x = (int) earthSlicePiece.getX() * GlobalSettings.EARTH_PIECE_WIDTH;
 		int yTop = Math.round(getHeight() - earthSlicePiece.getY());
 		//int yTop = 50;
 		int yBottom = Math.round(earthSlicePiece.getDepth() == -1 ? getHeight() : yTop + earthSlicePiece.getDepth());
@@ -149,8 +150,8 @@ public class GameView extends View
 		paint.setColor(groundColor);
 		paint.setStrokeWidth(1);
 
-		canvas.drawLine(x, yTop, x, yBottom, paint);
-		//canvas.drawRect(x, yTop, x + 1, yBottom, paint);
+		//canvas.drawLine(x, yTop, x, yBottom, paint);
+		canvas.drawRect(x, yTop, x + GlobalSettings.EARTH_PIECE_WIDTH, yBottom, paint);
 		//g.drawLine(x, yTop, x, yBottom);
 	}
 

@@ -61,8 +61,8 @@ public class World {
 
 	public void addExplossion(Bomb bomb) {
 		int width = bomb.getStrength();
-		int start = (int) (bomb.getX() - width/2);
-		int end = (int) (bomb.getX() + width/2);
+		int start = (int) (bomb.getX() - width/2) / GlobalSettings.EARTH_PIECE_WIDTH;
+		int end = (int) (bomb.getX() + width/2) / GlobalSettings.EARTH_PIECE_WIDTH;
 		int y = (int) (bomb.getY());
 
 		if (start < 0) {
@@ -73,7 +73,7 @@ public class World {
 		}
 
 		for (int x = start; x < end; x++) {
-			double value = Math.sin((double)(x - start)/(width/3));
+			double value = Math.sin((double)(x - start)/(width/3) *  GlobalSettings.EARTH_PIECE_WIDTH);
 			int depth = (int) Math.round(width / 2 * value);
 			addGap(x, y + depth, depth * 2);
 		}
