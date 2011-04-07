@@ -6,5 +6,96 @@
     android:layout_height="fill_parent"
     >
 
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/layout_title_panel"
+        android:orientation="horizontal"
+        android:layout_width="fill_parent"
+        android:layout_height="50dip"
+        android:background="#FF4040"
+        android:gravity="center_vertical">
+
+        <TextView
+            android:layout_width="80dip"
+            android:layout_height="wrap_content"
+            android:textColor="@android:color/white"
+            android:text="Player X"/>
+
+        <TextView
+            android:id="@+id/id_title_panel_angle_view"
+            android:layout_width="80dip"
+            android:layout_height="wrap_content"
+            android:textColor="@android:color/white"
+            android:paddingLeft="5dip"
+            android:text="Angle = 0"/>
+
+        <TextView
+            android:id="@+id/id_title_panel_last_action_view"
+            android:layout_width="120dip"
+            android:layout_height="wrap_content"
+            android:textColor="@android:color/white"
+            android:paddingLeft="5dip"
+            android:text="Last action"/>
+
+    </LinearLayout>
+
+     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/layout_game_panel"
+        android:orientation="vertical"
+        android:layout_width="fill_parent"
+        android:layout_height="390dip"
+        android:background="#FF69B4">
+    </LinearLayout>
+
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/layout_game_control_panel"
+        android:orientation="vertical"
+        android:layout_width="fill_parent"
+        android:layout_height="100dip"
+        android:background="#FF69B4">
+
+        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            android:id="@+id/layout_game_control_panel"
+            android:orientation="horizontal"
+            android:layout_width="fill_parent"
+            android:layout_height="50dip"
+             android:gravity="center">
+
+            <SeekBar
+                android:id="@+id/id_angle_bar"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:max="180"
+                android:progress="0"/>
+        </LinearLayout>
+
+        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            android:id="@+id/layout_game_control_panel"
+            android:orientation="horizontal"
+            android:layout_width="fill_parent"
+            android:layout_height="50dip"
+            android:gravity="center">
+
+            <Button
+                android:id="@+id/id_controller_left_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingLeft="5dip"
+                android:text="left"/>
+            <Button
+                android:id="@+id/id_controller_right_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingLeft="5dip"
+                android:text="right"/>
+            <Button
+                android:id="@+id/id_controller_fire_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingLeft="20dip"
+                android:text="FIRE"/>
+        </LinearLayout>
+    </LinearLayout>
+
 </LinearLayout>
 

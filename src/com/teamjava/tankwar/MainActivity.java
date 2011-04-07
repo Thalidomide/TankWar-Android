@@ -6,17 +6,25 @@ import android.app.Dialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.text.Html;
+import android.text.Spanned;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.teamjava.tankwar.ui.GameView;
 
 public class MainActivity
     extends Activity
+        implements SeekBar.OnSeekBarChangeListener
 {
+    private TextView titleAngleBarView;
+    private TextView titleLastActionView;
+
     /**
      * Called when the activity is first created.
      * */
@@ -26,11 +34,88 @@ public class MainActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
 
-        LinearLayout mainRootView =
-            (LinearLayout) findViewById(R.id.layout_root);
+        initTitlePanelView();
+        initGamePanelView();
+        initGameControllerView();
+    }
+
+    /**
+     * This is the title panel of this game.
+     * todo implement widgets when we know what we want. :)
+     */
+    private void initTitlePanelView()
+    {
+        LinearLayout titlePanelView =
+            (LinearLayout) findViewById(R.id.layout_title_panel);
+
+        titleAngleBarView = (TextView) titlePanelView.
+                findViewById(R.id.id_title_panel_angle_view);
+
+        titleLastActionView = (TextView) titlePanelView.
+            findViewById(R.id.id_title_panel_last_action_view);
+    }
+
+    /**
+     * This is the game panel of this game.
+     * All gaming graphics will be used in this view.
+     */
+    private void initGamePanelView()
+    {
+        LinearLayout gamePanelView =
+            (LinearLayout) findViewById(R.id.layout_game_panel);
         GameView gameView = new GameView(this);
 
-        mainRootView.addView(gameView);
+        gamePanelView.addView(gameView);
+    }
+
+    /**
+     * This is the game controller panel of this game.
+     * todo implement widgets when we know what we want. :)
+     */
+    private void initGameControllerView()
+    {
+        LinearLayout gameControllerPanelView =
+            (LinearLayout) findViewById(R.id.layout_game_control_panel);
+
+        SeekBar angleBar =
+            (SeekBar) gameControllerPanelView.findViewById(R.id.id_angle_bar);
+        angleBar.setOnSeekBarChangeListener(this);
+
+        Button gameControllerLeftButton =
+            (Button) gameControllerPanelView.
+                findViewById(R.id.id_controller_left_button);
+
+        gameControllerLeftButton.setOnClickListener(new View.OnClickListener()
+        {
+            public void onClick(View view)
+            {
+                titleLastActionView.setText("Last action: left");
+            }
+        });
+
+        Button gameControllerRightButton =
+            (Button) gameControllerPanelView.
+                findViewById(R.id.id_controller_right_button);
+
+        gameControllerRightButton.setOnClickListener(new View.OnClickListener()
+        {
+            public void onClick(View view)
+            {
+                titleLastActionView.setText("Last action: right");
+            }
+        });
+
+        Button gameControllerFireButton =
+            (Button) gameControllerPanelView.
+                findViewById(R.id.id_controller_fire_button);
+
+        gameControllerFireButton.setOnClickListener(new View.OnClickListener()
+        {
+            public void onClick(View view)
+            {
+                titleLastActionView.setText("Last action: fire");
+            }
+        });
     }
 
 
@@ -149,5 +234,21 @@ public class MainActivity
      * */
     private void displayToast(String text){
         Toast.makeText(getApplicationContext(),text, Toast.LENGTH_SHORT).show();
+    }
+
+    public void onProgressChanged(SeekBar seekBar, int angle, boolean b)
+    {
+        Spanned spanned = Html.fromHtml("Angle = <u>" + angle + "</u>");
+        titleAngleBarView.setText(spanned);
+    }
+
+    public void onStartTrackingTouch(SeekBar seekBar)
+    {
+        // todo, not need atm.
+    }
+
+    public void onStopTrackingTouch(SeekBar seekBar)
+    {
+        // todo, not need atm.
     }
 }

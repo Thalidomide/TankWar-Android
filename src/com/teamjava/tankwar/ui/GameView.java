@@ -45,6 +45,7 @@ public class GameView extends View
 		initData();
 
         this.setOnTouchListener(this);
+
         setBackgroundColor(backgroundColor);
 
         //paint.setAntiAlias(true);
