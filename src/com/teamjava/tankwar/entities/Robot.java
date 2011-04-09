@@ -31,7 +31,7 @@ public class Robot implements PhysicalObject {
 	public void paint(Canvas canvas, Paint paint) {
 		float radius = ViewCamera.getZoomedSize(4);
 		float xCam = ViewCamera.getViewX(x);
-		float yCam = ViewCamera.getViewX(y);
+		float yCam = ViewCamera.getViewY(y);
 
 		paint.setColor(color);
 		canvas.drawCircle(xCam, yCam, radius, paint);

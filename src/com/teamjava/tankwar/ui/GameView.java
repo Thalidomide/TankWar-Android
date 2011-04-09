@@ -65,9 +65,7 @@ public class GameView extends View
 		Robot robot = new Robot();
 		robot.setY(1000);
 		robot.setX(10);
-
-//		World world = Manager.getWorld();
-//		world.addRobot(robot);
+		world.addRobot(robot);
 
 		WorldEngine worldEngine = new WorldEngine(world);
 
@@ -100,17 +98,10 @@ public class GameView extends View
 
     public boolean onTouch(View view, MotionEvent motionEvent)
     {
-		  float x = motionEvent.getX();
-		  float y = motionEvent.getY();
+		float x = motionEvent.getX();
+		float y = motionEvent.getY();
 
-        //x = ViewCamera.getWorldViewX(motionEvent.getX());
-        //y = ViewCamera.getWorldViewY(motionEvent.getY());
-
-		/*if(motionEvent.getAction() == MotionEvent.ACTION_DOWN)
-        {
-
-        }
-        else */if(motionEvent.getAction() == MotionEvent.ACTION_MOVE)
+        if(motionEvent.getAction() == MotionEvent.ACTION_MOVE)
         {
 			float moveFactor = 0.5f;
 			float xDiff = (x - xPrev) * moveFactor;
@@ -159,7 +150,6 @@ public class GameView extends View
 
 	public void createBomb(float x, float y) {
 		int strength = (int) (Math.random() * 50 + 5);
-		//Bomb bomb = new Bomb(x, getHeight() - y, strength);
 		Bomb bomb = new Bomb(x, y, strength);
 		synchronized (world.getBombs()) {
 			world.addBomb(bomb);

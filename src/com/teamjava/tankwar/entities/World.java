@@ -62,17 +62,17 @@ public class World {
 	public void addExplossion(Bomb bomb) {
 		int width = bomb.getStrength();
 		int start = (int) (bomb.getX() - width/2);
-		int end = (int) (bomb.getX() + width/2);
+		int end = start + width;
 		int y = (int) (bomb.getY());
 
 		if (start < 0) {
 			start = 0;
 		}
-		if (end > settings.getWorldWidth()) {
-			end = settings.getWorldWidth();
+		if (end >= settings.getWorldWidth()) {
+			end = settings.getWorldWidth() - 1;
 		}
 
-		for (int x = start; x < end; x++) {
+		for (int x = start; x <= end; x++) {
 			double value = Math.sin((double)(x - start)/(width/3));
 			int depth = (int) Math.round(width / 2 * value);
 			addGap(x, y + depth, depth * 2);
