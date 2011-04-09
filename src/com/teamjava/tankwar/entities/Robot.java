@@ -1,5 +1,11 @@
 package com.teamjava.tankwar.entities;
 
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
+
+import com.teamjava.tankwar.ui.ViewCamera;
+
 /**
  * @author Olav Jensen
  * @since Jan 23, 2011
@@ -18,7 +24,18 @@ public class Robot implements PhysicalObject {
 
 	private Movement movement = new Movement();
 
+	private int color = Color.rgb(0, 10, 30);
 	private float turretAngle;
+
+	@Override
+	public void paint(Canvas canvas, Paint paint) {
+		float radius = ViewCamera.getZoomedSize(4);
+		float xCam = ViewCamera.getViewX(x);
+		float yCam = ViewCamera.getViewX(y);
+
+		paint.setColor(color);
+		canvas.drawCircle(xCam, yCam, radius, paint);
+	}
 
 	public float getX() {
 		return x;

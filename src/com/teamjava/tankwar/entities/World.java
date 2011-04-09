@@ -34,7 +34,7 @@ public class World {
 
 	private static EarthSlice[] createSurface(GameSettings settings) {
 		EarthSlice[] surface = new EarthSlice[settings.getWorldWidth()];
-		int y = 400;
+		int y = 0;
 		Random random = new Random();
 
 		for (int i = 0; i < surface.length; i++) {
@@ -61,8 +61,8 @@ public class World {
 
 	public void addExplossion(Bomb bomb) {
 		int width = bomb.getStrength();
-		int start = (int) (bomb.getX() - width/2) / GlobalSettings.EARTH_PIECE_WIDTH;
-		int end = (int) (bomb.getX() + width/2) / GlobalSettings.EARTH_PIECE_WIDTH;
+		int start = (int) (bomb.getX() - width/2);
+		int end = (int) (bomb.getX() + width/2);
 		int y = (int) (bomb.getY());
 
 		if (start < 0) {
@@ -73,7 +73,7 @@ public class World {
 		}
 
 		for (int x = start; x < end; x++) {
-			double value = Math.sin((double)(x - start)/(width/3) *  GlobalSettings.EARTH_PIECE_WIDTH);
+			double value = Math.sin((double)(x - start)/(width/3));
 			int depth = (int) Math.round(width / 2 * value);
 			addGap(x, y + depth, depth * 2);
 		}

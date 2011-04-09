@@ -39,7 +39,7 @@ public class WorldEngine {
 			for (Iterator<Bomb> it = world.getBombs().iterator(); it.hasNext();) {
 				Bomb bomb = it.next();
 
-				if (bomb.getX() < 0 || (bomb.getX() / GlobalSettings.EARTH_PIECE_WIDTH) > world.getSurface().length) {
+				if (bomb.getX() < 0 || bomb.getX() > world.getSurface().length) {
 					it.remove();
 					continue;
 				}
@@ -60,7 +60,7 @@ public class WorldEngine {
 	}
 
 	private void checkIfBombHitGround(Bomb bomb) {
-		EarthSlice slice = world.getSurface()[Math.round(bomb.getX()) / GlobalSettings.EARTH_PIECE_WIDTH];
+		EarthSlice slice = world.getSurface()[Math.round(bomb.getX())];
 		//TODO Also check if between sub surfaces
 		if (bomb.getY() < slice.getTopSurface().getY()) {
 			bomb.hitGround();

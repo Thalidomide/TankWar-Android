@@ -1,16 +1,43 @@
 package com.teamjava.tankwar.entities;
 
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
+
+import com.teamjava.tankwar.ui.ViewCamera;
+
 /**
  * @author Olav Jensen
  * @since Jan 19, 2011
  */
-public class EarthSlicePiece implements Comparable<EarthSlicePiece> {
+public class EarthSlicePiece implements Comparable<EarthSlicePiece>, Paintable {
 
 	private int x;
 	private float y;
 	private float depth = -1;//-1 = unlimited depth
+	private final static float Y_BOTTOM = 1000;
 
 	private float speed;
+
+	private int groundColor = Color.rgb(0, 255, 0);
+
+	@Override
+	public void paint(Canvas canvas, Paint paint) {
+		float drawX = ViewCamera.getViewX(x);
+		float yTop = ViewCamera.getViewY(y);
+		//float yBottom = ViewCamera.getViewY(depth == -1 ? Y_BOTTOM : y + depth);
+		//float yBottom = depth == -1 ? Y_BOTTOM : ViewCamera.getViewY(y + depth);
+		float yBottom = depth == -1 ? Y_BOTTOM : ViewCamera.getViewY(y - depth);
+		float width = ViewCamera.getZoomedSize(1);
+
+		paint.setColor(groundColor);
+		paint.setStrokeWidth(1);
+
+		//System.out.println("Jordstykke x: " + drawX + ", ytop: " + yTop + ", ybot: " + yBottom + ", width: " + width);
+
+		//canvas.drawLine(x, yTop, x, yBottom, paint);
+		canvas.drawRect(drawX, yTop, drawX + width, yBottom, paint);
+	}
 
 	public float getX() {
 		return x;
