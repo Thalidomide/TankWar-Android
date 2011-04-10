@@ -6,18 +6,16 @@ import android.app.Dialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.text.Html;
-import android.text.Spanned;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
+import com.teamjava.tankwar.engine.RobotCommunicator;
 import com.teamjava.tankwar.ui.GameView;
 
 public class MainActivity
@@ -26,6 +24,9 @@ public class MainActivity
 {
     private TextView titleAngleBarView;
     private TextView titleLastActionView;
+
+    // A listener for the Robot(Tank).
+    private RobotCommunicator robotCommunicator;
 
     /**
      * Called when the activity is first created.
@@ -98,9 +99,15 @@ public class MainActivity
         }
     }
 
+    /**
+     * This method will be called whenever a Seekbar has changed.
+     * We are using only one Seekbar at the moment, so no need to distinguish
+     * SeekBars, just pass the angle to other methods.
+     * */
     public void onProgressChanged(SeekBar seekBar, int angle, boolean b)
     {
          setTitleAngleText(Integer.toString(angle));
+         robotCommunicator.robotTurretAngleChanged(angle);
     }
 
     public void onStartTrackingTouch(SeekBar seekBar)
@@ -171,6 +178,7 @@ public class MainActivity
         LinearLayout gamePanelView =
             (LinearLayout) findViewById(R.id.layout_game_panel);
         GameView gameView = new GameView(this);
+        robotCommunicator = gameView;
 
         gamePanelView.addView(gameView);
     }
@@ -197,6 +205,7 @@ public class MainActivity
             public void onClick(View view)
             {
                 setTitleLastActionText("left");
+                robotCommunicator.robotMoveLeft();
             }
         });
 
@@ -209,6 +218,7 @@ public class MainActivity
             public void onClick(View view)
             {
                setTitleLastActionText("right");
+                robotCommunicator.robotMoveRight();
             }
         });
 
@@ -221,6 +231,7 @@ public class MainActivity
             public void onClick(View view)
             {
                 setTitleLastActionText("fire");
+                robotCommunicator.robotFire();
             }
         });
     }

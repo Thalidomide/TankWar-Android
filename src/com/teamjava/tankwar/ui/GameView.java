@@ -8,6 +8,7 @@ import android.os.Handler;
 import android.view.MotionEvent;
 import android.view.View;
 
+import com.teamjava.tankwar.engine.RobotCommunicator;
 import com.teamjava.tankwar.engine.WorldEngine;
 import com.teamjava.tankwar.entities.Bomb;
 import com.teamjava.tankwar.entities.EarthSlice;
@@ -21,7 +22,9 @@ import com.teamjava.tankwar.entities.World;
  * User: rak
  */
 public class GameView extends View
-    implements View.OnTouchListener
+    implements
+        View.OnTouchListener,
+        RobotCommunicator
 {
     Paint paint = new Paint();
 	private World world;
@@ -57,7 +60,7 @@ public class GameView extends View
 
 	private void initData() {
 		GameSettings gameSettings = new GameSettings(300);
-		World world = new World(gameSettings);
+		world = new World(gameSettings);
 
 		Manager.setSettings(gameSettings);
 		Manager.setWorld(world);
@@ -65,6 +68,10 @@ public class GameView extends View
 		Robot robot = new Robot();
 		robot.setY(1000);
 		robot.setX(10);
+
+        // The robot need (a least for now) the context for this application
+        // in order to create a bitmap from the resources.
+        robot.setContext(this.getContext());
 		world.addRobot(robot);
 
 		WorldEngine worldEngine = new WorldEngine(world);
@@ -155,4 +162,42 @@ public class GameView extends View
 			world.addBomb(bomb);
 		}
 	}
+
+    @Override
+    public void robotMoveLeft()
+    {
+        // TODO(raymond) handle more robots.
+        Robot robot = world.getRobots().get(0);
+
+        final float robotX = robot.getX();
+        final float robotMovementValue = -2f;
+        robot.setX(robotX + robotMovementValue);
+    }
+
+    @Override
+    public void robotMoveRight()
+    {
+        // TODO(raymond) handle more robots.
+        Robot robot = world.getRobots().get(0);
+
+        final float robotX = robot.getX();
+        final float robotMovementValue = 2f;
+        robot.setX(robotX + robotMovementValue);
+    }
+
+    @Override
+    public void robotTurretAngleChanged(float degrees)
+    {
+        // TODO(raymond) handle more robots.
+        Robot robot = world.getRobots().get(0);
+
+        robot.setTurretAngle(degrees);
+
+    }
+
+    @Override
+    public void robotFire()
+    {
+        // TODO(raymond) handle this event.
+    }
 }
