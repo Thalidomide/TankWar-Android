@@ -1,11 +1,11 @@
 package com.teamjava.tankwar.engine;
 
-import java.util.Iterator;
-
 import com.teamjava.tankwar.entities.Bomb;
 import com.teamjava.tankwar.entities.EarthSlice;
 import com.teamjava.tankwar.entities.GlobalSettings;
 import com.teamjava.tankwar.entities.World;
+
+import java.util.Iterator;
 
 /**
  * @author Olav Jensen

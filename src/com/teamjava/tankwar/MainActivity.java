@@ -12,6 +12,8 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
@@ -38,86 +40,6 @@ public class MainActivity
         initGamePanelView();
         initGameControllerView();
     }
-
-    /**
-     * This is the title panel of this game.
-     * todo implement widgets when we know what we want. :)
-     */
-    private void initTitlePanelView()
-    {
-        LinearLayout titlePanelView =
-            (LinearLayout) findViewById(R.id.layout_title_panel);
-
-        titleAngleBarView = (TextView) titlePanelView.
-                findViewById(R.id.id_title_panel_angle_view);
-
-        titleLastActionView = (TextView) titlePanelView.
-            findViewById(R.id.id_title_panel_last_action_view);
-    }
-
-    /**
-     * This is the game panel of this game.
-     * All gaming graphics will be used in this view.
-     */
-    private void initGamePanelView()
-    {
-        LinearLayout gamePanelView =
-            (LinearLayout) findViewById(R.id.layout_game_panel);
-        GameView gameView = new GameView(this);
-
-        gamePanelView.addView(gameView);
-    }
-
-    /**
-     * This is the game controller panel of this game.
-     * todo implement widgets when we know what we want. :)
-     */
-    private void initGameControllerView()
-    {
-        LinearLayout gameControllerPanelView =
-            (LinearLayout) findViewById(R.id.layout_game_control_panel);
-
-        SeekBar angleBar =
-            (SeekBar) gameControllerPanelView.findViewById(R.id.id_angle_bar);
-        angleBar.setOnSeekBarChangeListener(this);
-
-        Button gameControllerLeftButton =
-            (Button) gameControllerPanelView.
-                findViewById(R.id.id_controller_left_button);
-
-        gameControllerLeftButton.setOnClickListener(new View.OnClickListener()
-        {
-            public void onClick(View view)
-            {
-                titleLastActionView.setText("Last action: left");
-            }
-        });
-
-        Button gameControllerRightButton =
-            (Button) gameControllerPanelView.
-                findViewById(R.id.id_controller_right_button);
-
-        gameControllerRightButton.setOnClickListener(new View.OnClickListener()
-        {
-            public void onClick(View view)
-            {
-                titleLastActionView.setText("Last action: right");
-            }
-        });
-
-        Button gameControllerFireButton =
-            (Button) gameControllerPanelView.
-                findViewById(R.id.id_controller_fire_button);
-
-        gameControllerFireButton.setOnClickListener(new View.OnClickListener()
-        {
-            public void onClick(View view)
-            {
-                titleLastActionView.setText("Last action: fire");
-            }
-        });
-    }
-
 
     /**
      * This method will inflate the main_view_menu.xml and add this as the
@@ -174,6 +96,133 @@ public class MainActivity
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+    public void onProgressChanged(SeekBar seekBar, int angle, boolean b)
+    {
+         setTitleAngleText(Integer.toString(angle));
+    }
+
+    public void onStartTrackingTouch(SeekBar seekBar)
+    {
+        // todo, not need atm.
+    }
+
+    public void onStopTrackingTouch(SeekBar seekBar)
+    {
+        // todo, not need atm.
+    }
+
+     /**
+     * This is the title panel of this game.
+     * todo implement widgets when we know what we want. :)
+     */
+    private void initTitlePanelView()
+    {
+        LinearLayout titlePanelView =
+            (LinearLayout) findViewById(R.id.layout_title_panel);
+
+        TextView titlePlayerNameView =
+            (TextView) titlePanelView.
+                findViewById(R.id.id_title_panel_player_name_view);
+
+        String playerText = "<b>Player: </b><u>pax2k</u>";
+        titlePlayerNameView.setText(Html.fromHtml(playerText));
+
+        titleAngleBarView = (TextView) titlePanelView.
+            findViewById(R.id.id_title_panel_angle_view);
+
+        setTitleAngleText("0");
+
+        titleLastActionView = (TextView) titlePanelView.
+            findViewById(R.id.id_title_panel_last_action_view);
+
+        setTitleLastActionText("none");
+    }
+
+    /**
+     * Update the last action view in title view.
+     *
+     * @param actionText text to be displayed
+     */
+    private void setTitleLastActionText(String actionText)
+    {
+        String lastActionText = "<b>Last action: </b><u>" + actionText + "</u>";
+        titleLastActionView.setText(Html.fromHtml(lastActionText));
+    }
+
+    /**
+     * Update the angle view in title view.
+     *
+     * @param angle the turrets angle
+     */
+    private void setTitleAngleText(String angle)
+    {
+        String angleText = "<b>Turret angle: </b><u>" + angle + "</u> &deg;";
+        titleAngleBarView.setText(Html.fromHtml(angleText));
+    }
+
+    /**
+     * This is the game panel of this game.
+     * All gaming graphics will be used in this view.
+     */
+    private void initGamePanelView()
+    {
+        LinearLayout gamePanelView =
+            (LinearLayout) findViewById(R.id.layout_game_panel);
+        GameView gameView = new GameView(this);
+
+        gamePanelView.addView(gameView);
+    }
+
+    /**
+     * This is the game controller panel of this game.
+     * todo implement widgets when we know what we want. :)
+     */
+    private void initGameControllerView()
+    {
+        LinearLayout gameControllerPanelView =
+            (LinearLayout) findViewById(R.id.layout_game_control_panel);
+
+        SeekBar angleBar =
+            (SeekBar) gameControllerPanelView.findViewById(R.id.id_angle_bar);
+        angleBar.setOnSeekBarChangeListener(this);
+
+        ImageView gameControllerLeftButton =
+            (ImageView) gameControllerPanelView.
+                findViewById(R.id.id_controller_left_button);
+
+        gameControllerLeftButton.setOnClickListener(new View.OnClickListener()
+        {
+            public void onClick(View view)
+            {
+                setTitleLastActionText("left");
+            }
+        });
+
+        ImageView gameControllerRightButton =
+            (ImageView) gameControllerPanelView.
+                findViewById(R.id.id_controller_right_button);
+
+        gameControllerRightButton.setOnClickListener(new View.OnClickListener()
+        {
+            public void onClick(View view)
+            {
+               setTitleLastActionText("right");
+            }
+        });
+
+        ImageView gameControllerFireButton =
+            (ImageView) gameControllerPanelView.
+                findViewById(R.id.id_controller_fire_button);
+
+        gameControllerFireButton.setOnClickListener(new View.OnClickListener()
+        {
+            public void onClick(View view)
+            {
+                setTitleLastActionText("fire");
+            }
+        });
     }
 
     /**
@@ -234,21 +283,5 @@ public class MainActivity
      * */
     private void displayToast(String text){
         Toast.makeText(getApplicationContext(),text, Toast.LENGTH_SHORT).show();
-    }
-
-    public void onProgressChanged(SeekBar seekBar, int angle, boolean b)
-    {
-        Spanned spanned = Html.fromHtml("Angle = <u>" + angle + "</u>");
-        titleAngleBarView.setText(spanned);
-    }
-
-    public void onStartTrackingTouch(SeekBar seekBar)
-    {
-        // todo, not need atm.
-    }
-
-    public void onStopTrackingTouch(SeekBar seekBar)
-    {
-        // todo, not need atm.
     }
 }
