@@ -26,9 +26,10 @@ public class Bomb implements PhysicalObject {
 		this.x = x;
 		this.y = y;
 		this.strength = strength;
+		float radAngle = (float) (Math.toRadians(angle) - Math.PI);
 
-		xSpeed = (float) (speed * Math.cos(angle));
-		ySpeed = (float) (speed * Math.sin(angle));
+		xSpeed = (float) (speed * Math.cos(radAngle));
+		ySpeed = (float) (speed * Math.sin(radAngle));
 	}
 
 	public Bomb(float x, float y, int strength) {
@@ -49,7 +50,8 @@ public class Bomb implements PhysicalObject {
 
 	@Override
 	public void paint(Canvas canvas, Paint paint) {
-		float radius = ViewCamera.getZoomedSize(strength / 4);
+		//float radius = ViewCamera.getZoomedSize(strength / 4);
+		float radius = ViewCamera.getZoomedSize(2);
 
 		float xDraw = ViewCamera.getViewX(x);
 		float yDraw = ViewCamera.getViewY(y);

@@ -4,7 +4,6 @@ import android.os.Handler;
 
 import com.teamjava.tankwar.engine.WorldEngine;
 import com.teamjava.tankwar.entities.GlobalSettings;
-import com.teamjava.tankwar.entities.Manager;
 
 /**
  * @author Olav Jensen
@@ -26,19 +25,15 @@ public class Repainter implements Runnable, DrawListener {
 		gameView.setListener(this);
 	}
 
-	//int counter = 10;
-
 	@Override
 	public void run() {
 		long sleepTime = 0;
 		if (!isDrawing) {
 			isDrawing = true;
-			checkCreateBomb();
 
 			worldEngine.updateWorld();
 			gameView.invalidate();
 			sleepTime = GlobalSettings.REPAINT_SLEEP - worldEngine.getLastUpdateTime();
-			///sleepTime = 100;
 			if (sleepTime < 0) {
 				sleepTime = 0;
 			}
@@ -47,17 +42,6 @@ public class Repainter implements Runnable, DrawListener {
 		}
 
 		handler.postDelayed(this, sleepTime);
-	}
-
-	int counter = 0;
-	private void checkCreateBomb() {
-		if (counter > 20) {
-			gameView.createBomb((float)(Math.random() * Manager.getSettings().getWorldWidth() - 1), 300);
-
-			counter = 0;
-		} else {
-			counter++;
-		}
 	}
 
 	@Override

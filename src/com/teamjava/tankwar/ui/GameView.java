@@ -66,8 +66,8 @@ public class GameView extends View
 		Manager.setWorld(world);
 
 		Robot robot = new Robot();
-		robot.setY(1000);
-		robot.setX(10);
+		robot.setY(100);
+		robot.setX(gameSettings.getWorldWidth() / 2);
 
         // The robot need (a least for now) the context for this application
         // in order to create a bitmap from the resources.

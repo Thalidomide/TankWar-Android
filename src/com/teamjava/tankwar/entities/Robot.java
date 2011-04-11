@@ -18,6 +18,7 @@ import com.teamjava.tankwar.ui.ViewCamera;
 public class Robot implements PhysicalObject {
 
 	private final float speed = 2;
+	private final static float BOMB_SHOOT_HEIGHT_ABOVE_TANK = 20;
 
     // FIXME (raymond) This class should not need to know about the context.
     private Context context;
@@ -167,7 +168,7 @@ public class Robot implements PhysicalObject {
 
 	public void fire() {
 		int strength = (int) (Math.random() * 50 + 5);
-		Bomb bomb = new Bomb(x, y, 10, turretAngle, strength);
+		Bomb bomb = new Bomb(x, y + BOMB_SHOOT_HEIGHT_ABOVE_TANK, 10, turretAngle, strength);
 
 		Manager.getWorld().addBomb(bomb);
 	}
