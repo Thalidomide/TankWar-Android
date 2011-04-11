@@ -65,15 +65,17 @@ public class World {
 		int end = start + width;
 		int y = (int) (bomb.getY());
 
-		if (start < 0) {
-			start = 0;
-		}
 		if (end >= settings.getWorldWidth()) {
 			end = settings.getWorldWidth() - 1;
 		}
 
 		for (int x = start; x <= end; x++) {
-			double value = Math.sin((double)(x - start)/(width/3));
+			if (x < 0) {
+				continue;
+			} else if (end >= settings.getWorldWidth()) {
+				break;
+			}
+			double value = Math.sin((double) (x - start) / (width / 3));
 			int depth = (int) Math.round(width / 2 * value);
 			addGap(x, y + depth, depth * 2);
 		}

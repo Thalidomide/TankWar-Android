@@ -1,11 +1,11 @@
 package com.teamjava.tankwar.engine;
 
+import java.util.Iterator;
+import java.util.List;
+
 import com.teamjava.tankwar.entities.EarthSlice;
 import com.teamjava.tankwar.entities.EarthSlicePiece;
 import com.teamjava.tankwar.entities.World;
-
-import java.util.Iterator;
-import java.util.List;
 
 /**
  * @author Olav Jensen
