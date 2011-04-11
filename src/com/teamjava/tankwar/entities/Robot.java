@@ -1,7 +1,6 @@
 package com.teamjava.tankwar.entities;
 
 import android.content.Context;
-import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
@@ -53,8 +52,7 @@ public class Robot implements PhysicalObject {
                 R.drawable.game_tank);
         }
 
-        // TODO (raymond) x and y is not pixel perfect with terrain :D
-        canvas.drawBitmap(tankBitmap, xCam, yCam, paint);
+        canvas.drawBitmap(tankBitmap, xCam - tankBitmap.getWidth() / 2, yCam - tankBitmap.getHeight() + 5, paint);
 
         //TODO(raymond) UGLY evil hack starts here!
         // Please fix this :)
