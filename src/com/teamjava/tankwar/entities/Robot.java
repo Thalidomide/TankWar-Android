@@ -86,6 +86,7 @@ public class Robot implements PhysicalObject {
             yCam - tankBitmap.getHeight() - 25,
             paint);
 
+        // If turret angle has change. Restet matrix and rotate again.
         if (currentTurrentAngle != getTurretAngle()) {
             matrix.reset();
             matrix.postRotate(getTurretAngle());
