@@ -198,6 +198,6 @@ public class GameView extends View
     @Override
     public void robotFire()
     {
-        // TODO(raymond) handle this event.
+        world.getRobots().get(0).fire();
     }
 }

@@ -162,4 +162,11 @@ public class Robot implements PhysicalObject {
     {
         this.context = context;
     }
+
+	public void fire() {
+		int strength = (int) (Math.random() * 50 + 5);
+		Bomb bomb = new Bomb(x, y, 10, turretAngle, strength);
+
+		Manager.getWorld().addBomb(bomb);
+	}
 }

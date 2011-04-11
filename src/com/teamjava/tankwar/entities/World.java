@@ -51,12 +51,12 @@ public class World {
 		return surface;
 	}
 
-	private static int getNextY(int y, Random random) {
-		return y + random.nextInt(3) - 1;
+	public synchronized void addBomb(Bomb bomb) {
+		bombs.add(bomb);
 	}
 
-	public void addBomb(Bomb bomb) {
-		bombs.add(bomb);
+	private static int getNextY(int y, Random random) {
+		return y + random.nextInt(3) - 1;
 	}
 
 	public void addExplossion(Bomb bomb) {

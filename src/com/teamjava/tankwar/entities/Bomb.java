@@ -13,7 +13,7 @@ import com.teamjava.tankwar.ui.ViewCamera;
 public class Bomb implements PhysicalObject {
 
 	private float x, y;
-	private float ySpeed;
+	private float xSpeed, ySpeed;
 
 	private boolean activated;
 	private int countDown = 3;
@@ -21,6 +21,15 @@ public class Bomb implements PhysicalObject {
 	private final int strength;
 
 	private int bombColor = Color.rgb(80, 80, 50);
+
+	public Bomb(float x, float y, float speed, float angle, int strength) {
+		this.x = x;
+		this.y = y;
+		this.strength = strength;
+
+		xSpeed = (float) (speed * Math.cos(angle));
+		ySpeed = (float) (speed * Math.sin(angle));
+	}
 
 	public Bomb(float x, float y, int strength) {
 		this.x = x;
@@ -30,7 +39,7 @@ public class Bomb implements PhysicalObject {
 
 	@Override
 	public float getXSpeed() {
-		return 0; //TODO Implement
+		return xSpeed;
 	}
 
 	@Override
@@ -67,6 +76,7 @@ public class Bomb implements PhysicalObject {
 	}
 
 	public void move() {
+		x += xSpeed;
 		y -= ySpeed;
 	}
 
