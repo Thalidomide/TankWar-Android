@@ -5,6 +5,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.Matrix;
 import android.graphics.Paint;
 
 import com.teamjava.tankwar.R;
@@ -34,6 +35,10 @@ public class Robot implements PhysicalObject {
 	private int color = Color.rgb(0, 10, 30);
 	private float turretAngle;
     private Bitmap tankBitmap = null;
+    private Bitmap turrent;
+    private Matrix matrix = new Matrix();
+    private float currentTurrentAngle = -1;
+    private Bitmap turrentRotated;
 
     @Override
 	public void paint(Canvas canvas, Paint paint) {
@@ -46,50 +51,47 @@ public class Robot implements PhysicalObject {
         // We may going to need at least two images(moving left and right).
         // This bitmap should be initialized one time (can be an fps eater..).
         // Maybe move this to constructor or something like that.
-        if (tankBitmap == null) {
+         if (tankBitmap == null) {
             tankBitmap = BitmapFactory.decodeResource(
                 getContext().getResources(),
                 R.drawable.game_tank);
         }
 
-        canvas.drawBitmap(tankBitmap, xCam - tankBitmap.getWidth() / 2, yCam - tankBitmap.getHeight() + 5, paint);
+        canvas.drawBitmap(
+            tankBitmap,
+            xCam - tankBitmap.getWidth() / 2,
+            yCam - tankBitmap.getHeight() + 5,
+            paint);
 
-        //TODO(raymond) UGLY evil hack starts here!
-        // Please fix this :)
-        // And move the calculation to some method (util?)
-        float xTurrentEnd = 0;
-        float yTurrentEnd = 0;
-        float angle = getTurretAngle();
-
-        if (angle > 0 && angle < 20) {
-            xTurrentEnd = xCam - 30;
-            yTurrentEnd = yCam - 5;
-        } else if (angle > 20 && angle < 40) {
-            xTurrentEnd = xCam - 25;
-            yTurrentEnd = yCam - 20;
-        }  else if (angle > 40 && angle < 60) {
-            xTurrentEnd = xCam - 20;
-            yTurrentEnd = yCam -  30;
-        } else if (angle > 60 && angle < 90) {
-            xTurrentEnd = xCam - 10;
-            yTurrentEnd = yCam - 40;
-        } else if (angle > 90 && angle < 110) {
-            xTurrentEnd = xCam - 0;
-            yTurrentEnd = yCam - 30;
-        } else if (angle > 110 && angle < 130) {
-            xTurrentEnd = xCam + 25;
-            yTurrentEnd = yCam - 30;
-        } else if (angle > 130 && angle < 150) {
-            xTurrentEnd = xCam + 25;
-            yTurrentEnd = yCam - 20;
-        }  else if (angle > 150 && angle < 180) {
-            xTurrentEnd = xCam + 30;
-            yTurrentEnd = yCam - 5;
+        // Get the turrent bitmap. This will be done only once.
+        if (turrent == null) {
+            turrent = BitmapFactory.decodeResource(
+                getContext().getResources(),
+                R.drawable.turrent);
         }
 
-        if (0 != xTurrentEnd && 0 != yTurrentEnd) {
-            paint.setStrokeWidth(4f);
-            canvas.drawLine(xCam,yCam,xTurrentEnd,yTurrentEnd, paint);
+        // Create a new Bitmap from turrent bitmap. This
+        turrentRotated = Bitmap.createBitmap(
+            turrent,
+            0,
+            0,
+            turrent.getWidth(),
+            turrent.getHeight(),
+            matrix,
+            true);
+
+        canvas.drawBitmap(
+            turrentRotated,
+            xCam - tankBitmap.getWidth() / 2,
+            yCam - tankBitmap.getHeight() - 25,
+            paint);
+
+        // If turret angle has change. Restet matrix and rotate again.
+        if (currentTurrentAngle != getTurretAngle()) {
+            matrix.reset();
+            matrix.postRotate(getTurretAngle());
+
+            currentTurrentAngle = getTurretAngle();
         }
     }
 
