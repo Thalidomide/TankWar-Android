@@ -18,6 +18,8 @@ import android.widget.Toast;
 import com.teamjava.tankwar.engine.RobotCommunicator;
 import com.teamjava.tankwar.ui.GameView;
 
+import java.text.DecimalFormat;
+
 public class MainActivity
     extends Activity
         implements SeekBar.OnSeekBarChangeListener
@@ -28,6 +30,9 @@ public class MainActivity
     // A listener for the Robot(Tank).
     private RobotCommunicator robotCommunicator;
     private int selectedPower = 5;
+    private float zoomLevel = 3f;
+    private TextView titleZoomView;
+    private DecimalFormat zoomTextFormat = new DecimalFormat("#,##0.00");
 
     /**
      * Called when the activity is first created.
@@ -130,12 +135,10 @@ public class MainActivity
         LinearLayout titlePanelView =
             (LinearLayout) findViewById(R.id.layout_title_panel);
 
-        TextView titlePlayerNameView =
-            (TextView) titlePanelView.
-                findViewById(R.id.id_title_panel_player_name_view);
+        titleZoomView = (TextView) titlePanelView.
+            findViewById(R.id.id_title_panel_zoom_view);
 
-        String playerText = "<b>Player: </b><u>pax2k</u>";
-        titlePlayerNameView.setText(Html.fromHtml(playerText));
+        updateZoomText();
 
         titleAngleBarView = (TextView) titlePanelView.
             findViewById(R.id.id_title_panel_angle_view);
@@ -146,6 +149,14 @@ public class MainActivity
             findViewById(R.id.id_title_panel_last_action_view);
 
         setSelectedPowerText("5");
+    }
+
+    private void updateZoomText()
+    {
+        String formatedZoomLevel = zoomTextFormat.format(zoomLevel);
+
+        String playerText = "<b>Zoom: </b><u>" + formatedZoomLevel + "</u>";
+        titleZoomView.setText(Html.fromHtml(playerText));
     }
 
     /**
@@ -213,6 +224,27 @@ public class MainActivity
                 }
                 setSelectedPowerText(Integer.toString(selectedPower));
                 robotCommunicator.robotSetFirePower(selectedPower);
+            }
+        });
+
+        ImageView gameControllerZoomButton =
+            (ImageView) gameControllerPanelView.
+                findViewById(R.id.id_controller_zoom_button);
+
+        gameControllerZoomButton.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View view)
+            {
+                if (zoomLevel >= 5) {
+                    zoomLevel = 0.2f;
+                }
+                else {
+                  zoomLevel = zoomLevel * 1.1f;
+                }
+
+                updateZoomText();
+                robotCommunicator.setWorldZoomLevel(zoomLevel);
             }
         });
 

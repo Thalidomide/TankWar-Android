@@ -211,4 +211,10 @@ public class GameView extends View
 
         robot.setBombFirePower(newFirePower);
     }
+
+    @Override
+    public void setWorldZoomLevel(float zoomLevel)
+    {
+       ViewCamera.setZoom(zoomLevel);
+    }
 }

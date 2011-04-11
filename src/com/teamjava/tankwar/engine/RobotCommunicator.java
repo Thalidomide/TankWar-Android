@@ -43,7 +43,10 @@ public interface RobotCommunicator
 
     /**
      *  Update the robot fire power.
+     * @param newFirePower the new fire power
      */
     void robotSetFirePower(int newFirePower);
+
+    void setWorldZoomLevel(float zoomLevel);
 
 }

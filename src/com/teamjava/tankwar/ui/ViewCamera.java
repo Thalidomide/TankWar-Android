@@ -50,7 +50,12 @@ public class ViewCamera {
 		yCam = - getUnZoomedSize(viewHeight / 2);
 	}
 
-	public static int getViewHeight() {
+    public static void setZoom(float zoom)
+    {
+        ViewCamera.zoom = zoom;
+    }
+
+    public static int getViewHeight() {
 		return viewHeight;
 	}
 }

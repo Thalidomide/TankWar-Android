@@ -15,7 +15,7 @@
         android:gravity="center">
 
         <TextView
-            android:id="@+id/id_title_panel_player_name_view"
+            android:id="@+id/id_title_panel_zoom_view"
             android:layout_width="150dip"
             android:layout_height="wrap_content"
             android:textColor="@android:color/white"/>
@@ -60,6 +60,13 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:src="@drawable/power"/>
+
+         <ImageView
+                android:id="@+id/id_controller_zoom_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingLeft="20dip"
+                android:src="@drawable/zoom"/>
 
         <SeekBar
                 android:id="@+id/id_angle_bar"
