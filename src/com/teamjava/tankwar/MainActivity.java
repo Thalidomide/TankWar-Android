@@ -23,10 +23,11 @@ public class MainActivity
         implements SeekBar.OnSeekBarChangeListener
 {
     private TextView titleAngleBarView;
-    private TextView titleLastActionView;
+    private TextView selectedPowerView;
 
     // A listener for the Robot(Tank).
     private RobotCommunicator robotCommunicator;
+    private int selectedPower = 5;
 
     /**
      * Called when the activity is first created.
@@ -141,21 +142,21 @@ public class MainActivity
 
         setTitleAngleText("0");
 
-        titleLastActionView = (TextView) titlePanelView.
+        selectedPowerView = (TextView) titlePanelView.
             findViewById(R.id.id_title_panel_last_action_view);
 
-        setTitleLastActionText("none");
+        setSelectedPowerText("5");
     }
 
     /**
-     * Update the last action view in title view.
+     * Update the selected power view in title view.
      *
-     * @param actionText text to be displayed
+     * @param powerAsString text to be displayed
      */
-    private void setTitleLastActionText(String actionText)
+    private void setSelectedPowerText(String powerAsString)
     {
-        String lastActionText = "<b>Last action: </b><u>" + actionText + "</u>";
-        titleLastActionView.setText(Html.fromHtml(lastActionText));
+        String lastActionText = "<b>Fire power: </b><u>" + powerAsString + "</u>";
+        selectedPowerView.setText(Html.fromHtml(lastActionText));
     }
 
     /**
@@ -196,6 +197,25 @@ public class MainActivity
             (SeekBar) gameControllerPanelView.findViewById(R.id.id_angle_bar);
         angleBar.setOnSeekBarChangeListener(this);
 
+        ImageView gameControllerPowerButton =
+            (ImageView) gameControllerPanelView.
+                findViewById(R.id.id_controller_power_button);
+        gameControllerPowerButton.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View view)
+            {
+                if (selectedPower >= 6) {
+                    selectedPower = 1;
+                }
+                else {
+                    selectedPower ++;
+                }
+                setSelectedPowerText(Integer.toString(selectedPower));
+                robotCommunicator.robotSetFirePower(selectedPower);
+            }
+        });
+
         ImageView gameControllerLeftButton =
             (ImageView) gameControllerPanelView.
                 findViewById(R.id.id_controller_left_button);
@@ -204,7 +224,6 @@ public class MainActivity
         {
             public void onClick(View view)
             {
-                setTitleLastActionText("left");
                 robotCommunicator.robotMoveLeft();
             }
         });
@@ -217,7 +236,6 @@ public class MainActivity
         {
             public void onClick(View view)
             {
-               setTitleLastActionText("right");
                 robotCommunicator.robotMoveRight();
             }
         });
@@ -230,7 +248,6 @@ public class MainActivity
         {
             public void onClick(View view)
             {
-                setTitleLastActionText("fire");
                 robotCommunicator.robotFire();
             }
         });

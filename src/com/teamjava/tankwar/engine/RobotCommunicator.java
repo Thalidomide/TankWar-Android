@@ -41,4 +41,9 @@ public interface RobotCommunicator
      */
     void robotFire();
 
+    /**
+     *  Update the robot fire power.
+     */
+    void robotSetFirePower(int newFirePower);
+
 }

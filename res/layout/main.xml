@@ -55,10 +55,17 @@
         android:background="#000000"
          android:gravity="center">
 
-            <SeekBar
+        <ImageView
+                android:id="@+id/id_controller_power_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/power"/>
+
+        <SeekBar
                 android:id="@+id/id_angle_bar"
                 android:layout_width="250dip"
                 android:layout_height="wrap_content"
+                android:paddingLeft="20dip"
                 android:max="180"
                 android:progress="0"/>
 

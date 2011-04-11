@@ -198,6 +198,17 @@ public class GameView extends View
     @Override
     public void robotFire()
     {
-        world.getRobots().get(0).fire();
+        // TODO(raymond) handle more robots.
+        Robot robot = world.getRobots().get(0);
+        robot.fire();
+    }
+
+    @Override
+    public void robotSetFirePower(int newFirePower)
+    {
+        // TODO(raymond) handle more robots.
+        Robot robot = world.getRobots().get(0);
+
+        robot.setBombFirePower(newFirePower);
     }
 }

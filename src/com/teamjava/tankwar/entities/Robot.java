@@ -40,6 +40,7 @@ public class Robot implements PhysicalObject {
     private Matrix matrix = new Matrix();
     private float currentTurrentAngle = -1;
     private Bitmap turrentRotated;
+    private int bombFirePower = 5;
 
     @Override
 	public void paint(Canvas canvas, Paint paint) {
@@ -166,9 +167,19 @@ public class Robot implements PhysicalObject {
         this.context = context;
     }
 
-	public void fire() {
+    public int getBombFirePower()
+    {
+        return bombFirePower;
+    }
+
+    public void setBombFirePower(int bombFirePower)
+    {
+        this.bombFirePower = bombFirePower;
+    }
+
+    public void fire() {
 		int strength = (int) (Math.random() * 50 + 5);
-		Bomb bomb = new Bomb(x, y + BOMB_SHOOT_HEIGHT_ABOVE_TANK, 10, turretAngle, strength);
+        Bomb bomb = new Bomb(x, y + BOMB_SHOOT_HEIGHT_ABOVE_TANK, bombFirePower, turretAngle, strength);
 
 		Manager.getWorld().addBomb(bomb);
 	}
