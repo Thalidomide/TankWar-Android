@@ -23,6 +23,13 @@ public class Robot implements PhysicalObject {
     // FIXME (raymond) This class should not need to know about the context.
     private Context context;
 
+    // Robot is a computer or a human.
+    private boolean isComputer = false;
+
+    // Referance to the tank image. Use the setter to change image. (different
+    // tanks for computer/player??).
+    private int game_tank_image_ref;
+
 	private float x;
 	private float y;
 
@@ -37,9 +44,11 @@ public class Robot implements PhysicalObject {
 	private float turretAngle;
     private Bitmap tankBitmap = null;
     private Bitmap turrent;
+    private Bitmap turrentRotated;
+
     private Matrix matrix = new Matrix();
     private float currentTurrentAngle = -1;
-    private Bitmap turrentRotated;
+
     private int bombFirePower = 5;
 
     @Override
@@ -54,9 +63,10 @@ public class Robot implements PhysicalObject {
         // This bitmap should be initialized one time (can be an fps eater..).
         // Maybe move this to constructor or something like that.
          if (tankBitmap == null) {
-            tankBitmap = BitmapFactory.decodeResource(
+             game_tank_image_ref = R.drawable.game_tank;
+             tankBitmap = BitmapFactory.decodeResource(
                 getContext().getResources(),
-                R.drawable.game_tank);
+                 game_tank_image_ref);
         }
 
         canvas.drawBitmap(
@@ -175,6 +185,26 @@ public class Robot implements PhysicalObject {
     public void setBombFirePower(int bombFirePower)
     {
         this.bombFirePower = bombFirePower;
+    }
+
+    public boolean isComputer()
+    {
+        return isComputer;
+    }
+
+    public void setComputer(boolean computer)
+    {
+        isComputer = computer;
+    }
+
+    public int getGame_tank_image_ref()
+    {
+        return game_tank_image_ref;
+    }
+
+    public void setGame_tank_image_ref(int game_tank_image_ref)
+    {
+        this.game_tank_image_ref = game_tank_image_ref;
     }
 
     public void fire() {

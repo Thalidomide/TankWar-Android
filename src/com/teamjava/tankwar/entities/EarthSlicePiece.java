@@ -19,7 +19,7 @@ public class EarthSlicePiece implements Comparable<EarthSlicePiece>, Paintable {
 
 	private float speed;
 
-	private int groundColor = Color.rgb(0, 255, 0);
+	private int groundColor = Color.parseColor("#c89e60");
 
 	@Override
 	public void paint(Canvas canvas, Paint paint) {
@@ -30,7 +30,7 @@ public class EarthSlicePiece implements Comparable<EarthSlicePiece>, Paintable {
 		float yBottom = depth == -1 ? Y_BOTTOM : ViewCamera.getViewY(y - depth);
 		float width = ViewCamera.getZoomedSize(1);
 
-		paint.setColor(groundColor);
+		paint.setColor(getGroundColor());
 		paint.setStrokeWidth(1);
 
 		//System.out.println("Jordstykke x: " + drawX + ", ytop: " + yTop + ", ybot: " + yBottom + ", width: " + width);
@@ -75,7 +75,17 @@ public class EarthSlicePiece implements Comparable<EarthSlicePiece>, Paintable {
 		this.depth = depth;
 	}
 
-	/**
+    public int getGroundColor()
+    {
+        return groundColor;
+    }
+
+    public void setGroundColor(int groundColor)
+    {
+        this.groundColor = groundColor;
+    }
+
+    /**
 	 * @param distance the target distance to move.
 	 * @return true if the target distance was reached.
 	 */

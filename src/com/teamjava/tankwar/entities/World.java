@@ -1,9 +1,12 @@
 package com.teamjava.tankwar.entities;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 
+import android.graphics.Color;
 import com.teamjava.tankwar.engine.GapCreator;
 
 /**
@@ -19,6 +22,14 @@ public class World {
 
 	private List<Bomb> bombs = new ArrayList<Bomb>();
 
+    private final static int laserColor = Color.parseColor("#c89e60");
+    private final static int harvestGoldColor = Color.parseColor("#e4b170");
+    private final static int apacheColor = Color.parseColor("#d2a35d");
+    private final static int chamoisColor = Color.parseColor("#e7bf97");
+
+    private static Map<Integer,Integer> colorMap =
+        new HashMap<Integer,Integer>(4);
+
 	public World(GameSettings settings) {
 		this(settings, createSurface(settings));
 	}
@@ -32,13 +43,20 @@ public class World {
 		this.robots.add(robot);
 	}
 
+    // TODO this is a static singleton? Bad design :D ?
 	private static EarthSlice[] createSurface(GameSettings settings) {
+        colorMap.put(0, laserColor);
+        colorMap.put(1, harvestGoldColor);
+        colorMap.put(2, apacheColor);
+        colorMap.put(3, chamoisColor);
+
 		EarthSlice[] surface = new EarthSlice[settings.getWorldWidth()];
 		int y = 0;
 		Random random = new Random();
 
 		for (int i = 0; i < surface.length; i++) {
 			EarthSlicePiece earthSlicePiece = new EarthSlicePiece();
+            earthSlicePiece.setGroundColor(colorMap.get(random.nextInt(3)));
 
 			y = getNextY(y, random);
 
