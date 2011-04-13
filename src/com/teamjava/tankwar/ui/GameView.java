@@ -17,6 +17,7 @@ import com.teamjava.tankwar.entities.GameSettings;
 import com.teamjava.tankwar.entities.Manager;
 import com.teamjava.tankwar.entities.Robot;
 import com.teamjava.tankwar.entities.World;
+import com.teamjava.tankwar.util.MediaPlayerUtil;
 import com.teamjava.tankwar.util.Util;
 
 import java.util.List;
@@ -37,6 +38,7 @@ public class GameView extends View
 
     private DrawListener listener;
 	private boolean hasDrawn;
+    private MediaPlayerUtil mediaPlayer;
 
     public GameView(Context context)
     {
@@ -46,6 +48,7 @@ public class GameView extends View
 
         this.setOnTouchListener(this);
         setBackgroundResource(R.drawable.background_sky);
+        mediaPlayer = new MediaPlayerUtil(this.getContext());
     }
 
 	public void setListener(DrawListener listener) {
@@ -194,6 +197,7 @@ public class GameView extends View
         // TODO(raymond) handle more robots.
         Robot robot = robotList.get(0);
         robot.fire();
+        mediaPlayer.playSound(R.raw.fire);
 
         // TODO(raymond) maybe not the best place to update the values for the
         // computer.
