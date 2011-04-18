@@ -43,11 +43,11 @@ public class Robot implements PhysicalObject {
 	private int color = Color.rgb(0, 10, 30);
 	private float turretAngle;
     private Bitmap tankBitmap = null;
-    private Bitmap turrent;
-    private Bitmap turrentRotated;
+    private Bitmap turret;
+    private Bitmap turretRotated;
 
     private Matrix matrix = new Matrix();
-    private float currentTurrentAngle = -1;
+    private float currentTurretAngle = -1;
 
     private int bombFirePower = 5;
 
@@ -75,35 +75,34 @@ public class Robot implements PhysicalObject {
             yCam - tankBitmap.getHeight() + 5,
             paint);
 
-        // Get the turrent bitmap. This will be done only once.
-        if (turrent == null) {
-            turrent = BitmapFactory.decodeResource(
+        // Get the turret bitmap. This will be done only once.
+        if (turret == null) {
+            turret = BitmapFactory.decodeResource(
                 getContext().getResources(),
-                R.drawable.turrent);
+                R.drawable.turret);
         }
 
-        // Create a new Bitmap from turrent bitmap. This
-        turrentRotated = Bitmap.createBitmap(
-            turrent,
+        // Create a new Bitmap from turret bitmap. This
+        turretRotated = Bitmap.createBitmap(turret,
             0,
             0,
-            turrent.getWidth(),
-            turrent.getHeight(),
+            turret.getWidth(),
+            turret.getHeight(),
             matrix,
             true);
 
         canvas.drawBitmap(
-            turrentRotated,
-            xCam - tankBitmap.getWidth() / 2,
-            yCam - tankBitmap.getHeight() - 25,
-            paint);
+				turretRotated,
+				xCam - tankBitmap.getWidth() / 2,
+				yCam - tankBitmap.getHeight() - 25,
+				paint);
 
         // If turret angle has change. Restet matrix and rotate again.
-        if (currentTurrentAngle != getTurretAngle()) {
+        if (currentTurretAngle != getTurretAngle()) {
             matrix.reset();
             matrix.postRotate(getTurretAngle());
 
-            currentTurrentAngle = getTurretAngle();
+            currentTurretAngle = getTurretAngle();
         }
     }
 
