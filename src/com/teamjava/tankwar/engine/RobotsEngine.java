@@ -27,6 +27,10 @@ public class RobotsEngine {
 		if (isAboveSurface(robot, world)) {
 			robot.setYSpeed(robot.getYSpeed() + GlobalSettings.GRAVITY);
 			robot.setY(robot.getY() - robot.getYSpeed());
+
+			if (!isAboveSurface(robot, world)) {
+				robot.setYSpeed(0);
+			}
 		}
 
 		int x = Math.round(robot.getX());
@@ -41,10 +45,6 @@ public class RobotsEngine {
 	private static boolean isAboveSurface(Robot robot, World world) {
 		int x = Math.round(robot.getX());
 		return robot.getY() > world.getSurface()[x].getTopSurface().getY();
-	}
-
-	private static void updateGravity(Robot robot, World world) {
-		//TODO Implement
 	}
 
 	private static void updateMovement(Robot robot) {
