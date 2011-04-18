@@ -30,7 +30,7 @@ public class Bomb implements PhysicalObject {
 		float radAngle = (float) (Math.toRadians(angle) - Math.PI);
 
 		xSpeed = (float) (fireSpeed * Math.cos(radAngle)) + initialXSpeed;
-		ySpeed = (float) (fireSpeed * Math.sin(radAngle));//TODO Should be influenced by initialYSpeed, once the tank move more properly up and down
+		ySpeed = (float) (fireSpeed * Math.sin(radAngle)) + initialYSpeed;
 	}
 
 	@Override
