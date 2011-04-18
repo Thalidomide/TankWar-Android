@@ -1,7 +1,6 @@
 package com.teamjava.tankwar.entities;
 
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Paint;
 
 import com.teamjava.tankwar.ui.ViewCamera;
@@ -19,8 +18,6 @@ public class EarthSlicePiece implements Comparable<EarthSlicePiece>, Paintable {
 
 	private float speed;
 
-	private int groundColor = Color.parseColor("#c89e60");
-
 	@Override
 	public void paint(Canvas canvas, Paint paint) {
 		float drawX = ViewCamera.getViewX(x);
@@ -30,7 +27,6 @@ public class EarthSlicePiece implements Comparable<EarthSlicePiece>, Paintable {
 		float yBottom = depth == -1 ? Y_BOTTOM : ViewCamera.getViewY(y - depth);
 		float width = ViewCamera.getZoomedSize(1);
 
-		paint.setColor(getGroundColor());
 		paint.setStrokeWidth(1);
 
 		//System.out.println("Jordstykke x: " + drawX + ", ytop: " + yTop + ", ybot: " + yBottom + ", width: " + width);
@@ -74,16 +70,6 @@ public class EarthSlicePiece implements Comparable<EarthSlicePiece>, Paintable {
 	public void setDepth(float depth) {
 		this.depth = depth;
 	}
-
-    public int getGroundColor()
-    {
-        return groundColor;
-    }
-
-    public void setGroundColor(int groundColor)
-    {
-        this.groundColor = groundColor;
-    }
 
     /**
 	 * @param distance the target distance to move.

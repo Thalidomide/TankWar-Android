@@ -1,5 +1,7 @@
 package com.teamjava.tankwar.ui;
 
+import java.util.List;
+
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Paint;
@@ -11,16 +13,12 @@ import com.teamjava.tankwar.R;
 import com.teamjava.tankwar.engine.RobotCommunicator;
 import com.teamjava.tankwar.engine.WorldEngine;
 import com.teamjava.tankwar.entities.Bomb;
-import com.teamjava.tankwar.entities.EarthSlice;
-import com.teamjava.tankwar.entities.EarthSlicePiece;
 import com.teamjava.tankwar.entities.GameSettings;
 import com.teamjava.tankwar.entities.Manager;
 import com.teamjava.tankwar.entities.Robot;
 import com.teamjava.tankwar.entities.World;
 import com.teamjava.tankwar.util.MediaPlayerUtil;
 import com.teamjava.tankwar.util.Util;
-
-import java.util.List;
 
 /**
  * User: rak
@@ -128,7 +126,7 @@ public class GameView extends View
 		int width = getWidth();
 		int i = 0;
 		while (i < width && i < world.getSurface().length) {
-			drawEarthSlice(world.getSurface()[i], canvas);
+			world.getSurface()[i].paint(canvas, paint);
 			i++;
 		}
 	}
@@ -136,14 +134,6 @@ public class GameView extends View
 	private void drawRobots(Canvas canvas) {
 		for (Robot robot : world.getRobots()) {
 			robot.paint(canvas, paint);
-		}
-	}
-
-	private void drawEarthSlice(EarthSlice earthSlice, Canvas canvas) {
-		earthSlice.getTopSurface().paint(canvas, paint);
-
-		for (EarthSlicePiece earthSlicePiece : earthSlice.getSubSurfaces()) {
-			earthSlicePiece.paint(canvas, paint);
 		}
 	}
 

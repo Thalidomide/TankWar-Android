@@ -56,14 +56,13 @@ public class World {
 
 		for (int i = 0; i < surface.length; i++) {
 			EarthSlicePiece earthSlicePiece = new EarthSlicePiece();
-            earthSlicePiece.setGroundColor(colorMap.get(random.nextInt(3)));
 
 			y = getNextY(y, random);
 
 			earthSlicePiece.setX(i);
 			earthSlicePiece.setY(y);
 
-			surface[i] = new EarthSlice(earthSlicePiece);
+			surface[i] = new EarthSlice(earthSlicePiece, colorMap.get(random.nextInt(3)));
 		}
 
 		return surface;
