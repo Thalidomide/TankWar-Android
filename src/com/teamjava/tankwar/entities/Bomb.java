@@ -22,20 +22,15 @@ public class Bomb implements PhysicalObject {
 
 	private int bombColor = Color.rgb(80, 80, 50);
 
-	public Bomb(float x, float y, float speed, float angle, int strength) {
+	public Bomb(float x, float y, float initialXSpeed, float initialYSpeed, float fireSpeed, float angle, int strength) {
 		this.x = x;
+
 		this.y = y;
 		this.strength = strength;
 		float radAngle = (float) (Math.toRadians(angle) - Math.PI);
 
-		xSpeed = (float) (speed * Math.cos(radAngle));
-		ySpeed = (float) (speed * Math.sin(radAngle));
-	}
-
-	public Bomb(float x, float y, int strength) {
-		this.x = x;
-		this.y = y;
-		this.strength = strength;
+		xSpeed = (float) (fireSpeed * Math.cos(radAngle)) + initialXSpeed;
+		ySpeed = (float) (fireSpeed * Math.sin(radAngle));//TODO Should be influenced by initialYSpeed, once the tank move more properly up and down
 	}
 
 	@Override

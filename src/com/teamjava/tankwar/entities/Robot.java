@@ -17,7 +17,8 @@ import com.teamjava.tankwar.ui.ViewCamera;
  */
 public class Robot implements PhysicalObject {
 
-	private final float speed = 2;
+	private final float acceleration = 0.1f;
+	private final float maxSpeed = 2f;
 	private final static float BOMB_SHOOT_HEIGHT_ABOVE_TANK = 20;
 
     // FIXME (raymond) This class should not need to know about the context.
@@ -142,8 +143,41 @@ public class Robot implements PhysicalObject {
 		return movement;
 	}
 
-	public void setMovement(Movement movement) {
-		this.movement = movement;
+	public void updateMoveSpeed() {
+		switch (movement.getWalking()) {
+			case left:
+				xSpeed -= acceleration;
+				if (xSpeed < -maxSpeed) {
+					xSpeed = -maxSpeed;
+				}
+				break;
+			case right:
+				xSpeed += acceleration;
+				if (xSpeed > maxSpeed) {
+					xSpeed = maxSpeed;
+				}
+				break;
+			case stop:
+				breakSpeed();
+		}
+	}
+
+	private void breakSpeed() {
+		if (xSpeed == 0) {
+			return;
+		}
+
+		if (xSpeed > 0) {
+			xSpeed -= acceleration;
+			if (xSpeed < 0) {
+				xSpeed = 0;
+			}
+		} else {
+			xSpeed += acceleration;
+			if (xSpeed > 0) {
+				xSpeed = 0;
+			}
+		}
 	}
 
 	public float getTurretAngle() {
@@ -152,10 +186,6 @@ public class Robot implements PhysicalObject {
 
 	public void setTurretAngle(float turretAngle) {
 		this.turretAngle = turretAngle;
-	}
-
-	public float getSpeed() {
-		return speed;
 	}
 
 	public boolean isFalling() {
@@ -208,7 +238,7 @@ public class Robot implements PhysicalObject {
 
     public void fire() {
 		int strength = (int) (Math.random() * 50 + 5);
-        Bomb bomb = new Bomb(x, y + BOMB_SHOOT_HEIGHT_ABOVE_TANK, bombFirePower, turretAngle, strength);
+        Bomb bomb = new Bomb(x, y + BOMB_SHOOT_HEIGHT_ABOVE_TANK, xSpeed, ySpeed, bombFirePower, turretAngle, strength);
 
 		Manager.getWorld().addBomb(bomb);
 	}

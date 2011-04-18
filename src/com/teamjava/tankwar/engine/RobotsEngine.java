@@ -1,6 +1,7 @@
 package com.teamjava.tankwar.engine;
 
 import com.teamjava.tankwar.entities.GlobalSettings;
+import com.teamjava.tankwar.entities.Manager;
 import com.teamjava.tankwar.entities.Robot;
 import com.teamjava.tankwar.entities.World;
 
@@ -18,8 +19,8 @@ public class RobotsEngine {
 
 	private static void updateRobot(Robot robot, World world) {
 		updateIsFalling(robot, world);
-//		updateMovement(robot);
-//		updatePosition(robot, world);
+		updateMovement(robot);
+		updatePosition(robot, world);
 	}
 
 	private static void updateIsFalling(Robot robot, World world) {
@@ -46,27 +47,20 @@ public class RobotsEngine {
 		//TODO Implement
 	}
 
-//	private static void updateMovement(Robot robot) {
-//		switch (robot.getMovement().getWalking()) {
-//			case left:
-//				robot.setXSpeed(-robot.getSpeed());
-//				break;
-//			case right:
-//				robot.setXSpeed(robot.getSpeed());
-//				break;
-//			case stop:
-//				robot.setXSpeed(0);
-//		}
-//	}
+	private static void updateMovement(Robot robot) {
+		robot.updateMoveSpeed();
+	}
 
-//	private static void updatePosition(Robot robot, World world) {
-//		float newX = robot.getX() + robot.getXSpeed();
-//
-//		if (newX < 0) {
-//			newX = 0;
-//		} else if (newX > ) {
-//		}
-//
-//		robot.setX(v);
-//	}
+	private static void updatePosition(Robot robot, World world) {
+		float newX = robot.getX() + robot.getXSpeed();
+		float maxX = Manager.getSettings().getWorldWidth() - 1;
+
+		if (newX < 0) {
+			newX = 0;
+		} else if (newX > maxX) {
+			newX = maxX;
+		}
+
+		robot.setX(newX);
+	}
 }

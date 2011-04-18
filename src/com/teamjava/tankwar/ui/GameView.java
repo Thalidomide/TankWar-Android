@@ -15,6 +15,7 @@ import com.teamjava.tankwar.engine.WorldEngine;
 import com.teamjava.tankwar.entities.Bomb;
 import com.teamjava.tankwar.entities.GameSettings;
 import com.teamjava.tankwar.entities.Manager;
+import com.teamjava.tankwar.entities.Movement;
 import com.teamjava.tankwar.entities.Robot;
 import com.teamjava.tankwar.entities.World;
 import com.teamjava.tankwar.util.MediaPlayerUtil;
@@ -151,9 +152,8 @@ public class GameView extends View
         // TODO(raymond) handle more robots.
         Robot robot = robotList.get(0);
 
-        final float robotX = robot.getX();
-        final float robotMovementValue = -2f;
-        robot.setX(robotX + robotMovementValue);
+		Movement movement = robot.getMovement();
+		movement.setWalking(movement.getWalking() == Movement.Walk.left ? Movement.Walk.stop : Movement.Walk.left);
     }
 
     @Override
@@ -164,9 +164,8 @@ public class GameView extends View
         // TODO(raymond) handle more robots.
         Robot robot = robotList.get(0);
 
-        final float robotX = robot.getX();
-        final float robotMovementValue = 2f;
-        robot.setX(robotX + robotMovementValue);
+		Movement movement = robot.getMovement();
+		movement.setWalking(movement.getWalking() == Movement.Walk.right ? Movement.Walk.stop : Movement.Walk.right);
     }
 
     @Override
