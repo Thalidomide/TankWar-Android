@@ -42,13 +42,11 @@ public class Robot implements PhysicalObject {
 	private Movement movement = new Movement();
 
 	private int color = Color.rgb(0, 10, 30);
-	private float turretAngle;
+	private float turretAngle = 0;
     private Bitmap tankBitmap = null;
     private Bitmap turret;
-    private Bitmap turretRotated;
 
     private Matrix matrix = new Matrix();
-    private float currentTurretAngle = -1;
 
     private int bombFirePower = 5;
 
@@ -83,28 +81,14 @@ public class Robot implements PhysicalObject {
                 R.drawable.turret);
         }
 
-        // Create a new Bitmap from turret bitmap. This
-        turretRotated = Bitmap.createBitmap(turret,
-            0,
-            0,
-            turret.getWidth(),
-            turret.getHeight(),
-            matrix,
-            true);
-
         canvas.drawBitmap(
-				turretRotated,
-				xCam - tankBitmap.getWidth() / 2,
-				yCam - tankBitmap.getHeight() - 25,
-				paint);
+				turret,
+				matrix,
+				null);
 
-        // If turret angle has change. Restet matrix and rotate again.
-        if (currentTurretAngle != getTurretAngle()) {
-            matrix.reset();
-            matrix.postRotate(getTurretAngle());
-
-            currentTurretAngle = getTurretAngle();
-        }
+        matrix.reset();
+        matrix.setTranslate(xCam - turret.getWidth() / 2, yCam - turret.getHeight() - 15);
+        matrix.preRotate(getTurretAngle(),turret.getWidth() / 2,  turret.getHeight() / 2);
     }
 
 	public float getX() {
