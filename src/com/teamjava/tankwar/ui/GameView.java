@@ -19,7 +19,6 @@ import com.teamjava.tankwar.entities.Movement;
 import com.teamjava.tankwar.entities.Robot;
 import com.teamjava.tankwar.entities.World;
 import com.teamjava.tankwar.util.MediaPlayerUtil;
-import com.teamjava.tankwar.util.Util;
 
 /**
  * User: rak
@@ -69,10 +68,11 @@ public class GameView extends View
         // in order to create a bitmap from the resources.
         robotPlayer.setContext(this.getContext());
 
-        Robot robotComputer = new Robot();
+        final Robot robotComputer = new Robot();
         robotComputer.setY(100);
         robotComputer.setX(gameSettings.getWorldWidth()/4); // todo random?
         robotComputer.setContext(this.getContext());
+        robotComputer.setComputer(true);
 
         world.addRobot(robotPlayer);
         world.addRobot(robotComputer);
@@ -187,24 +187,6 @@ public class GameView extends View
         Robot robot = robotList.get(0);
         robot.fire();
         mediaPlayer.playSound(R.raw.fire);
-
-        // TODO(raymond) maybe not the best place to update the values for the
-        // computer.
-        if (robotList.size() >= 2) {
-            Robot robotComputer = robotList.get(1);
-
-            int angle = Util.getRandomNumber(180);
-            robotComputer.setTurretAngle(angle);
-
-            int firePower = Util.getRandomNumber(6);
-
-            // TODO(raymond) this is ugly! Read the docs :)
-            if (firePower == 0) {
-                firePower = 3;
-            }
-            robotComputer.setBombFirePower(firePower);
-            robotComputer.fire();
-        }
     }
 
     @Override

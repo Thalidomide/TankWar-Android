@@ -16,6 +16,7 @@ public class WorldEngine {
 
 	private final World world;
 	private long lastUpdateTime;
+    private RobotsEngine robotsEngine = new RobotsEngine();
 
 	public WorldEngine(World world) {
 		this.world = world;
@@ -89,6 +90,6 @@ public class WorldEngine {
 	}
 
 	private void updateRobots() {
-		RobotsEngine.updateRobots(world);
+        robotsEngine.updateRobots(world);
 	}
 }
