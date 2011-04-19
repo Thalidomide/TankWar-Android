@@ -4,12 +4,12 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Matrix;
 import android.graphics.Paint;
 
 import com.teamjava.tankwar.R;
 import com.teamjava.tankwar.ui.ViewCamera;
+import com.teamjava.tankwar.util.Util;
 
 /**
  * @author Olav Jensen
@@ -17,78 +17,71 @@ import com.teamjava.tankwar.ui.ViewCamera;
  */
 public class Robot implements PhysicalObject {
 
-	private final float acceleration = 0.1f;
-	private final float maxSpeed = 2f;
-	private final static float BOMB_SHOOT_HEIGHT_ABOVE_TANK = 20;
+    private final static float BOMB_SHOOT_HEIGHT_ABOVE_TANK = 20;
+    private static final float MAX_SPEED = 2f;
 
-    // FIXME (raymond) This class should not need to know about the context.
-    private Context context;
-
-    // Robot is a computer or a human.
-    private boolean isComputer = false;
-
-    // Referance to the tank image. Use the setter to change image. (different
-    // tanks for computer/player??).
-    private int game_tank_image_ref;
-
-	private float x;
+    private float x;
 	private float y;
 
 	private float xSpeed;
 	private float ySpeed;
 
-	private boolean falling;
+    private final float acceleration = 0.1f;
+    private float turretAngle = 0;
 
-	private Movement movement = new Movement();
-
-	private int color = Color.rgb(0, 10, 30);
-	private float turretAngle = 0;
-    private Bitmap tankBitmap = null;
-    private Bitmap turret;
-
-    private Matrix matrix = new Matrix();
+    // Robot is a computer or a human.
+    private boolean isComputer = false;
 
     private int bombFirePower = 5;
+
+    // FIXME (raymond) This class should not need to know about the context.
+    private Context context;
+
+    private Bitmap tankBitmap = null;
+    private Bitmap turretBitmap = null;
+
+    private Matrix matrix = new Matrix();
+	private Movement movement = new Movement();
+
 
     @Override
 	public void paint(Canvas canvas, Paint paint) {
 		float xCam = ViewCamera.getViewX(x);
 		float yCam = ViewCamera.getViewY(y);
 
-		paint.setColor(color);
-
         // Get the tank bitmap.
         // We may going to need at least two images(moving left and right).
         // This bitmap should be initialized one time (can be an fps eater..).
         // Maybe move this to constructor or something like that.
          if (tankBitmap == null) {
-             game_tank_image_ref = R.drawable.game_tank;
              tankBitmap = BitmapFactory.decodeResource(
                 getContext().getResources(),
-                 game_tank_image_ref);
+                 R.drawable.game_tank);
         }
 
         canvas.drawBitmap(
             tankBitmap,
             xCam - tankBitmap.getWidth() / 2,
             yCam - tankBitmap.getHeight() + 5,
-            paint);
+            null);
 
-        // Get the turret bitmap. This will be done only once.
-        if (turret == null) {
-            turret = BitmapFactory.decodeResource(
+        // Get the turretBitmap bitmap. This will be done only once.
+        if (turretBitmap == null) {
+            turretBitmap = BitmapFactory.decodeResource(
                 getContext().getResources(),
                 R.drawable.turret);
         }
 
         canvas.drawBitmap(
-				turret,
+            turretBitmap,
 				matrix,
 				null);
 
         matrix.reset();
-        matrix.setTranslate(xCam - turret.getWidth() / 2, yCam - turret.getHeight() - 15);
-        matrix.preRotate(getTurretAngle(),turret.getWidth() / 2,  turret.getHeight() / 2);
+        matrix.setTranslate(xCam - turretBitmap.getWidth() / 2, yCam - turretBitmap
+            .getHeight() - 15);
+        matrix.preRotate(getTurretAngle(), turretBitmap.getWidth() / 2,  turretBitmap
+            .getHeight() / 2);
     }
 
 	public float getX() {
@@ -111,10 +104,6 @@ public class Robot implements PhysicalObject {
 		return xSpeed;
 	}
 
-	public void setXSpeed(float xSpeed) {
-		this.xSpeed = xSpeed;
-	}
-
 	public float getYSpeed() {
 		return ySpeed;
 	}
@@ -131,14 +120,14 @@ public class Robot implements PhysicalObject {
 		switch (movement.getWalking()) {
 			case left:
 				xSpeed -= acceleration;
-				if (xSpeed < -maxSpeed) {
-					xSpeed = -maxSpeed;
+				if (xSpeed < -MAX_SPEED) {
+					xSpeed = -MAX_SPEED;
 				}
 				break;
 			case right:
 				xSpeed += acceleration;
-				if (xSpeed > maxSpeed) {
-					xSpeed = maxSpeed;
+				if (xSpeed > MAX_SPEED) {
+					xSpeed = MAX_SPEED;
 				}
 				break;
 			case stop:
@@ -172,14 +161,6 @@ public class Robot implements PhysicalObject {
 		this.turretAngle = turretAngle;
 	}
 
-	public boolean isFalling() {
-		return falling;
-	}
-
-	public void setFalling(boolean falling) {
-		this.falling = falling;
-	}
-
     public Context getContext()
     {
         return context;
@@ -188,11 +169,6 @@ public class Robot implements PhysicalObject {
     public void setContext(Context context)
     {
         this.context = context;
-    }
-
-    public int getBombFirePower()
-    {
-        return bombFirePower;
     }
 
     public void setBombFirePower(int bombFirePower)
@@ -210,20 +186,12 @@ public class Robot implements PhysicalObject {
         isComputer = computer;
     }
 
-    public int getGame_tank_image_ref()
-    {
-        return game_tank_image_ref;
-    }
-
-    public void setGame_tank_image_ref(int game_tank_image_ref)
-    {
-        this.game_tank_image_ref = game_tank_image_ref;
-    }
-
     public void fire() {
 		int strength = (int) (Math.random() * 50 + 5);
         Bomb bomb = new Bomb(x, y + BOMB_SHOOT_HEIGHT_ABOVE_TANK, xSpeed, ySpeed, bombFirePower, turretAngle, strength);
-
+        bomb.setContext(getContext());
 		Manager.getWorld().addBomb(bomb);
+
+        Util.playSound(getContext(), R.raw.fire);
 	}
 }

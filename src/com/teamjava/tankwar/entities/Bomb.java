@@ -1,10 +1,13 @@
 package com.teamjava.tankwar.entities;
 
+import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 
+import com.teamjava.tankwar.R;
 import com.teamjava.tankwar.ui.ViewCamera;
+import com.teamjava.tankwar.util.Util;
 
 /**
  * @author Olav Jensen
@@ -21,6 +24,8 @@ public class Bomb implements PhysicalObject {
 	private final int strength;
 
 	private int bombColor = Color.rgb(80, 80, 50);
+
+    private Context context;
 
 	public Bomb(float x, float y, float initialXSpeed, float initialYSpeed, float fireSpeed, float angle, int strength) {
 		this.x = x;
@@ -79,13 +84,24 @@ public class Bomb implements PhysicalObject {
 
 	public void hitGround() {
 		activated = true;
+        Util.playSound(getContext(), R.raw.blow_up );
 	}
 
 	public boolean isActivated() {
 		return activated;
 	}
 
-	public boolean blowUpThisRound() {
+    public void setContext(Context context)
+    {
+        this.context = context;
+    }
+
+    public Context getContext()
+    {
+        return context;
+    }
+
+    public boolean blowUpThisRound() {
 		if (!activated) {
 			return false;
 		}

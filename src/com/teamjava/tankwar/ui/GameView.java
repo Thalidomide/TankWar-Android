@@ -36,7 +36,6 @@ public class GameView extends View
 
     private DrawListener listener;
 	private boolean hasDrawn;
-    private MediaPlayerUtil mediaPlayer;
 
     public GameView(Context context)
     {
@@ -46,7 +45,6 @@ public class GameView extends View
 
         this.setOnTouchListener(this);
         setBackgroundResource(R.drawable.background_sky);
-        mediaPlayer = new MediaPlayerUtil(this.getContext());
     }
 
 	public void setListener(DrawListener listener) {
@@ -186,7 +184,6 @@ public class GameView extends View
         // TODO(raymond) handle more robots.
         Robot robot = robotList.get(0);
         robot.fire();
-        mediaPlayer.playSound(R.raw.fire);
     }
 
     @Override
