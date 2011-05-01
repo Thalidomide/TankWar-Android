@@ -84,7 +84,6 @@ public class Bomb implements PhysicalObject {
 
 	public void hitGround() {
 		activated = true;
-        Util.playSound(getContext(), R.raw.blow_up );
 	}
 
 	public boolean isActivated() {
@@ -107,6 +106,12 @@ public class Bomb implements PhysicalObject {
 		}
 
 		countDown--;
-		return countDown <= 0;
+		boolean blowUp = countDown <= 0;
+
+		if (blowUp) {
+			Util.playSound(getContext(), R.raw.blow_up);
+		}
+
+		return blowUp;
 	}
 }
