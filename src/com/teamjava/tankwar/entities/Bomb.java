@@ -51,7 +51,7 @@ public class Bomb implements PhysicalObject {
 	@Override
 	public void paint(Canvas canvas, Paint paint) {
 		//float radius = ViewCamera.getZoomedSize(strength / 4);
-		float radius = ViewCamera.getZoomedSize(2);
+		float radius = ViewCamera.getZoomedSize(1);
 
 		float xDraw = ViewCamera.getViewX(x);
 		float yDraw = ViewCamera.getViewY(y);

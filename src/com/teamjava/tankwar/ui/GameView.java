@@ -94,8 +94,8 @@ public class GameView extends View
 			world = Manager.getWorld();
 
 			drawEarth(canvas);
-			drawRobots(canvas);
 			drawBombs(canvas);
+			drawRobots(canvas);
 			drawSmokeClouds(canvas);
 		} finally {
 			if (listener != null) {

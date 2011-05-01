@@ -17,7 +17,7 @@ import com.teamjava.tankwar.util.Util;
  */
 public class Robot implements PhysicalObject {
 
-    private final static float BOMB_SHOOT_HEIGHT_ABOVE_TANK = 20;
+    private final static float BOMB_SHOOT_HEIGHT_ABOVE_TANK = 3;
     private static final float MAX_SPEED = 2f;
 
     private float x;
@@ -62,12 +62,6 @@ public class Robot implements PhysicalObject {
                  R.drawable.game_tank);
         }
 
-        canvas.drawBitmap(
-            tankBitmap,
-            xCam - tankBitmap.getWidth() / 2,
-            yCam - tankBitmap.getHeight() + 5,
-            null);
-
         // Get the turretBitmap bitmap. This will be done only once.
         if (turretBitmap == null) {
             turretBitmap = BitmapFactory.decodeResource(
@@ -80,9 +74,15 @@ public class Robot implements PhysicalObject {
 				matrix,
 				null);
 
+		canvas.drawBitmap(
+            tankBitmap,
+            xCam - tankBitmap.getWidth() / 2,
+            yCam - tankBitmap.getHeight() + 5,
+            null);
+
         matrix.reset();
         matrix.setTranslate(xCam - turretBitmap.getWidth() / 2, yCam - turretBitmap
-            .getHeight() - 15);
+            .getHeight() + 5);
         matrix.preRotate(getTurretAngle(), turretBitmap.getWidth() / 2,  turretBitmap
             .getHeight() / 2);
     }
