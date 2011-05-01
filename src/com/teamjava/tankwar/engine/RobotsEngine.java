@@ -85,11 +85,8 @@ public class RobotsEngine {
             robot.setTurretAngle(randomNumber);
         }
 
-        int randomFirePower = Util.getRandomNumber(6);
-        if (randomFirePower == 0) {
-            //TODO(raymond) hack, needs to be fixed.
-            randomFirePower = 3;
-        }
+        int randomFirePower = Util.getRandomNumber(5) + 1;
+
         robot.setBombFirePower(randomFirePower);
         robot.fire();
     }
