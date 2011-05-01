@@ -34,6 +34,9 @@ public class Robot implements PhysicalObject {
 
     private int bombFirePower = 5;
 
+	private int bombStrength = 10;
+	private int maxBombStrength = 100;
+
     // FIXME (raymond) This class should not need to know about the context.
     private Context context;
 
@@ -187,11 +190,21 @@ public class Robot implements PhysicalObject {
     }
 
     public void fire() {
-		int strength = (int) (Math.random() * 50 + 5);
-        Bomb bomb = new Bomb(x, y + BOMB_SHOOT_HEIGHT_ABOVE_TANK, xSpeed, ySpeed, bombFirePower, turretAngle, strength);
+        Bomb bomb = new Bomb(x, y + BOMB_SHOOT_HEIGHT_ABOVE_TANK, xSpeed, ySpeed, bombFirePower, turretAngle, bombStrength);
         bomb.setContext(getContext());
 		Manager.getWorld().addBomb(bomb);
 
         Util.playSound(getContext(), R.raw.fire);
+	}
+
+	public void increaseBombStrength() {
+		bombStrength += 10;
+		if (bombStrength > maxBombStrength) {
+			bombStrength = 10;
+		}
+	}
+
+	public int getBombStrength() {
+		return bombStrength;
 	}
 }

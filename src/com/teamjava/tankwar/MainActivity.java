@@ -1,5 +1,7 @@
 package com.teamjava.tankwar;
 
+import java.text.DecimalFormat;
+
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -15,10 +17,10 @@ import android.widget.LinearLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
-import com.teamjava.tankwar.engine.RobotCommunicator;
-import com.teamjava.tankwar.ui.GameView;
 
-import java.text.DecimalFormat;
+import com.teamjava.tankwar.engine.RobotCommunicator;
+import com.teamjava.tankwar.entities.Robot;
+import com.teamjava.tankwar.ui.GameView;
 
 public class MainActivity
     extends Activity
@@ -26,6 +28,7 @@ public class MainActivity
 {
     private TextView titleAngleBarView;
     private TextView selectedPowerView;
+    private TextView bombStrengthView;
 
     // A listener for the Robot(Tank).
     private RobotCommunicator robotCommunicator;
@@ -33,8 +36,9 @@ public class MainActivity
     private float zoomLevel = 3f;
     private TextView titleZoomView;
     private DecimalFormat zoomTextFormat = new DecimalFormat("#,##0.00");
+	private GameView gameView;
 
-    /**
+	/**
      * Called when the activity is first created.
      * */
     @Override
@@ -143,12 +147,10 @@ public class MainActivity
         titleAngleBarView = (TextView) titlePanelView.
             findViewById(R.id.id_title_panel_angle_view);
 
-        setTitleAngleText("0");
-
         selectedPowerView = (TextView) titlePanelView.
             findViewById(R.id.id_title_panel_last_action_view);
 
-        setSelectedPowerText("5");
+		bombStrengthView = (TextView) titlePanelView.findViewById(R.id.id_title_panel_bomb_strength_view);
     }
 
     private void updateZoomText()
@@ -170,6 +172,11 @@ public class MainActivity
         selectedPowerView.setText(Html.fromHtml(lastActionText));
     }
 
+	private void setSelectedBombStrengthText(int strength) {
+		String lastActionText = "<b>Bomb strength: </b><u>" + strength + "</u>";
+        bombStrengthView.setText(Html.fromHtml(lastActionText));
+	}
+
     /**
      * Update the angle view in title view.
      *
@@ -189,13 +196,21 @@ public class MainActivity
     {
         LinearLayout gamePanelView =
             (LinearLayout) findViewById(R.id.layout_game_panel);
-        GameView gameView = new GameView(this);
+		gameView = new GameView(this);
         robotCommunicator = gameView;
 
         gamePanelView.addView(gameView);
+
+		displayInitialGameValues();
     }
 
-    /**
+	private void displayInitialGameValues() {
+		setSelectedBombStrengthText(gameView.getRobotPlayer().getBombStrength());
+		setTitleAngleText("0");
+		setSelectedPowerText("5");
+	}
+
+	/**
      * This is the game controller panel of this game.
      * todo implement widgets when we know what we want. :)
      */
@@ -223,6 +238,20 @@ public class MainActivity
                     selectedPower ++;
                 }
                 setSelectedPowerText(Integer.toString(selectedPower));
+                robotCommunicator.robotSetFirePower(selectedPower);
+            }
+        });
+
+		ImageView gameControllerBombStrengthButton = (ImageView) gameControllerPanelView. findViewById(R.id.id_controller_bombstrength_button);
+        gameControllerBombStrengthButton.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View view)
+            {
+				Robot robotPlayer = gameView.getRobotPlayer();
+				robotPlayer.increaseBombStrength();
+
+                setSelectedBombStrengthText(robotPlayer.getBombStrength());
                 robotCommunicator.robotSetFirePower(selectedPower);
             }
         });

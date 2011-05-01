@@ -36,6 +36,8 @@ public class GameView extends View
     private DrawListener listener;
 	private boolean hasDrawn;
 
+	private Robot robotPlayer;
+
     public GameView(Context context)
     {
         super(context);
@@ -57,7 +59,7 @@ public class GameView extends View
 		Manager.setSettings(gameSettings);
 		Manager.setWorld(world);
 
-		Robot robotPlayer = new Robot();
+		robotPlayer = new Robot();
 		robotPlayer.setY(100);
 		robotPlayer.setX(gameSettings.getWorldWidth() / 2); // todo random?
 
@@ -199,4 +201,8 @@ public class GameView extends View
     {
        ViewCamera.setZoom(zoomLevel);
     }
+
+	public Robot getRobotPlayer() {
+		return robotPlayer;
+	}
 }
