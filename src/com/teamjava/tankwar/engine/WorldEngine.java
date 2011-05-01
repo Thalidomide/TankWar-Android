@@ -6,6 +6,7 @@ import com.teamjava.tankwar.entities.Bomb;
 import com.teamjava.tankwar.entities.EarthSlice;
 import com.teamjava.tankwar.entities.GlobalSettings;
 import com.teamjava.tankwar.entities.Manager;
+import com.teamjava.tankwar.entities.SmokeCloud;
 import com.teamjava.tankwar.entities.World;
 
 /**
@@ -28,6 +29,7 @@ public class WorldEngine {
 		updateBombs();
 		updateFallingPieces();
 		updateRobots();
+		updateSmokeClouds();
 		
 		lastUpdateTime = System.currentTimeMillis() - startTime;
 	}
@@ -91,5 +93,17 @@ public class WorldEngine {
 
 	private void updateRobots() {
         robotsEngine.updateRobots(world);
+	}
+
+	private void updateSmokeClouds() {
+		for (Iterator<SmokeCloud> it = world.getSmokeClouds().iterator(); it.hasNext();) {
+			SmokeCloud smokeCloud = it.next();
+
+			boolean lives = smokeCloud.increaseTimeLived();
+
+			if (!lives) {
+				it.remove();
+			}
+		}
 	}
 }

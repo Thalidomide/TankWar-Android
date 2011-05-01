@@ -17,6 +17,7 @@ import com.teamjava.tankwar.entities.GameSettings;
 import com.teamjava.tankwar.entities.Manager;
 import com.teamjava.tankwar.entities.Movement;
 import com.teamjava.tankwar.entities.Robot;
+import com.teamjava.tankwar.entities.SmokeCloud;
 import com.teamjava.tankwar.entities.World;
 
 /**
@@ -95,6 +96,7 @@ public class GameView extends View
 			drawEarth(canvas);
 			drawRobots(canvas);
 			drawBombs(canvas);
+			drawSmokeClouds(canvas);
 		} finally {
 			if (listener != null) {
 				listener.paintCompleted();
@@ -102,7 +104,7 @@ public class GameView extends View
 		}
 	}
 
-    public boolean onTouch(View view, MotionEvent motionEvent)
+	public boolean onTouch(View view, MotionEvent motionEvent)
     {
 		float x = motionEvent.getX();
 		float y = motionEvent.getY();
@@ -140,6 +142,12 @@ public class GameView extends View
 	private void drawBombs(Canvas canvas) {
 		for (Bomb bomb : world.getBombs()) {
 			bomb.paint(canvas, paint);
+		}
+	}
+
+	private void drawSmokeClouds(Canvas canvas) {
+		for (SmokeCloud smokeCloud : world.getSmokeClouds()) {
+			smokeCloud.paint(canvas, paint);
 		}
 	}
 

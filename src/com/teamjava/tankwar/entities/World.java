@@ -21,6 +21,7 @@ public class World {
 	private List<Robot> robots = new ArrayList<Robot>();
 
 	private List<Bomb> bombs = new ArrayList<Bomb>();
+	private List<SmokeCloud> smokeClouds = new ArrayList<SmokeCloud>();
 
     private final static int laserColor = Color.parseColor("#c89e60");
     private final static int harvestGoldColor = Color.parseColor("#e4b170");
@@ -77,6 +78,8 @@ public class World {
 	}
 
 	public void addExplossion(Bomb bomb) {
+		smokeClouds.add(new SmokeCloud(bomb.getStrength() / 2, bomb.getX(), bomb.getY()));
+
 		int width = bomb.getStrength();
 		int start = (int) (bomb.getX() - width/2);
 		int end = start + width;
@@ -112,5 +115,9 @@ public class World {
 
 	public List<Robot> getRobots() {
 		return robots;
+	}
+
+	public List<SmokeCloud> getSmokeClouds() {
+		return smokeClouds;
 	}
 }
