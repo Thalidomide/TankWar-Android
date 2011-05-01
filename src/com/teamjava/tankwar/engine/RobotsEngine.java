@@ -1,5 +1,7 @@
 package com.teamjava.tankwar.engine;
 
+import com.teamjava.tankwar.engine.util.MathUtil;
+import com.teamjava.tankwar.entities.EarthSlice;
 import com.teamjava.tankwar.entities.GlobalSettings;
 import com.teamjava.tankwar.entities.Manager;
 import com.teamjava.tankwar.entities.Movement;
@@ -17,6 +19,8 @@ public class RobotsEngine {
     // TODO(raymond) user timed action, not system cpu depended action :D
      private static final int NUMBER_OF_ACTION_BEFORE_ACTION = 60;
 
+	private float ySurface;
+
 	public void updateRobots(World world) {
 		for (Robot robot : world.getRobots()) {
 			updateRobot(robot, world);
@@ -24,6 +28,8 @@ public class RobotsEngine {
 	}
 
 	private void updateRobot(Robot robot, World world) {
+		ySurface = getSurfaceY(robot, world);
+
 		updateIsFalling(robot, world);
 		updateMovement(robot);
 		updatePosition(robot, world);
@@ -126,11 +132,11 @@ public class RobotsEngine {
     }
 
     private void updateIsFalling(Robot robot, World world) {
-		if (isAboveSurface(robot, world)) {
+		if (isAboveSurface(robot)) {
 			robot.setYSpeed(robot.getYSpeed() + GlobalSettings.GRAVITY);
 			robot.setY(robot.getY() - robot.getYSpeed());
 
-			if (!isAboveSurface(robot, world)) {
+			if (!isAboveSurface(robot)) {
 				robot.setYSpeed(0);
 			}
 		}
@@ -144,16 +150,40 @@ public class RobotsEngine {
 
 	}
 
-	private boolean isAboveSurface(Robot robot, World world) {
-		int x = Math.round(robot.getX());
-		return robot.getY() > world.getSurface()[x].getTopSurface().getY();
+	private boolean isAboveSurface(Robot robot) {
+		return robot.getY() > ySurface;
+	}
+
+	private float getSurfaceY(Robot robot, World world) {
+		int sliceIndex0 = (int) robot.getX();
+		int sliceIndex1 = sliceIndex0 + 1;
+
+		if (sliceIndex1 == Manager.getSettings().getWorldWidth()) {
+			// Standing at the end of the world
+			world.getSurface()[sliceIndex0].getTopSurface().getY();
+		}
+
+		EarthSlice slice0 = world.getSurface()[sliceIndex0];
+		EarthSlice slice1 = world.getSurface()[sliceIndex1];
+
+		float xSlice0 = slice0.getTopSurface().getX();
+		float ySlice0 = slice0.getTopSurface().getY();
+
+		float xSlice1 = slice1.getTopSurface().getX();
+		float ySlice1 = slice1.getTopSurface().getY();
+
+		return MathUtil.getYBetweenPoints(xSlice0, ySlice0, xSlice1, ySlice1, robot.getX());
 	}
 
 	private void updateMovement(Robot robot) {
+		if (isAboveSurface(robot)) {
+			// Can't control the robot mid-air
+			return;
+		}
 		robot.updateMoveSpeed();
 	}
 
-	private void updatePosition(Robot robot, World world) {
+	private void updatePosition(Robot robot) {
 		float newX = robot.getX() + robot.getXSpeed();
 		float maxX = Manager.getSettings().getWorldWidth() - 1;
 
