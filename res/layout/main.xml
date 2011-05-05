@@ -16,32 +16,32 @@
 
         <TextView
             android:id="@+id/id_title_panel_zoom_view"
-            android:layout_width="150dip"
+            android:layout_width="100dip"
             android:layout_height="wrap_content"
             android:textColor="@android:color/white"/>
 
         <TextView
             android:id="@+id/id_title_panel_angle_view"
-            android:layout_width="150dip"
+            android:layout_width="100dip"
             android:layout_height="wrap_content"
             android:textColor="@android:color/white"
-            android:paddingLeft="20dip"
+            android:paddingLeft="10dip"
             android:text="Angle = 0"/>
 
         <TextView
             android:id="@+id/id_title_panel_last_action_view"
-            android:layout_width="150dip"
+            android:layout_width="100dip"
             android:layout_height="wrap_content"
             android:textColor="@android:color/white"
-            android:paddingLeft="20dip"
+            android:paddingLeft="10dip"
             android:text="Last action"/>
 
 		<TextView
             android:id="@+id/id_title_panel_bomb_strength_view"
-            android:layout_width="150dip"
+            android:layout_width="100dip"
             android:layout_height="wrap_content"
             android:textColor="@android:color/white"
-            android:paddingLeft="20dip"
+            android:paddingLeft="10dip"
             android:text="Bomb strength"/>
 
     </LinearLayout>
@@ -79,14 +79,14 @@
                 android:id="@+id/id_controller_zoom_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:paddingLeft="20dip"
+                android:paddingLeft="10dip"
                 android:src="@drawable/zoom"/>
 
         <SeekBar
                 android:id="@+id/id_angle_bar"
-                android:layout_width="250dip"
+                android:layout_width="200dip"
                 android:layout_height="wrap_content"
-                android:paddingLeft="20dip"
+                android:paddingLeft="10dip"
                 android:max="180"
                 android:progress="0"/>
 
@@ -94,7 +94,7 @@
                 android:id="@+id/id_controller_left_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:paddingLeft="20dip"
+                android:paddingLeft="10dip"
                 android:src="@drawable/action_left_arrow"/>
             <ImageView
                 android:id="@+id/id_controller_right_button"
@@ -106,7 +106,7 @@
                 android:id="@+id/id_controller_fire_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:paddingLeft="20dip"
+                android:paddingLeft="10dip"
                  android:src="@drawable/action_shoot"/>
     </LinearLayout>
 
